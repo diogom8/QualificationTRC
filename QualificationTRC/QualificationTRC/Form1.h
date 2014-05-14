@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+
+
+
 namespace QualificationTRC {
 
 	using namespace System;
@@ -10,6 +13,7 @@ namespace QualificationTRC {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
+	using namespace System::IO;
 	/// <summary>
 	/// Summary for Form1
 	/// </summary>
@@ -98,6 +102,8 @@ namespace QualificationTRC {
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
+			 //Globals
+		String^ sWorkingFile;
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -179,12 +185,14 @@ namespace QualificationTRC {
 			this->lblMenuNew->Name = L"lblMenuNew";
 			this->lblMenuNew->Size = System::Drawing::Size(100, 22);
 			this->lblMenuNew->Text = L"&New";
+			this->lblMenuNew->Click += gcnew System::EventHandler(this, &Form1::lblMenuNew_Click);
 			// 
 			// lblMenuLoad
 			// 
 			this->lblMenuLoad->Name = L"lblMenuLoad";
 			this->lblMenuLoad->Size = System::Drawing::Size(100, 22);
 			this->lblMenuLoad->Text = L"&Load";
+			this->lblMenuLoad->Click += gcnew System::EventHandler(this, &Form1::lblMenuLoad_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -207,6 +215,7 @@ namespace QualificationTRC {
 			this->lblDialog->Size = System::Drawing::Size(266, 342);
 			this->lblDialog->TabIndex = 0;
 			this->lblDialog->Text = resources->GetString(L"lblDialog.Text");
+			this->lblDialog->TextChanged += gcnew System::EventHandler(this, &Form1::lblDialog_TextChanged);
 			// 
 			// lblSelectBox
 			// 
@@ -227,6 +236,7 @@ namespace QualificationTRC {
 			this->lblButLoad->TabIndex = 2;
 			this->lblButLoad->Text = L"Load";
 			this->lblButLoad->UseVisualStyleBackColor = true;
+			this->lblButLoad->Click += gcnew System::EventHandler(this, &Form1::lblButLoad_Click);
 			// 
 			// lblButStart
 			// 
@@ -299,6 +309,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC8->Location = System::Drawing::Point(176, 212);
 			this->lblBeaconIC8->Name = L"lblBeaconIC8";
+			this->lblBeaconIC8->ReadOnly = true;
 			this->lblBeaconIC8->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC8->TabIndex = 26;
 			// 
@@ -306,6 +317,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC7->Location = System::Drawing::Point(176, 184);
 			this->lblBeaconIC7->Name = L"lblBeaconIC7";
+			this->lblBeaconIC7->ReadOnly = true;
 			this->lblBeaconIC7->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC7->TabIndex = 25;
 			// 
@@ -313,6 +325,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC6->Location = System::Drawing::Point(176, 157);
 			this->lblBeaconIC6->Name = L"lblBeaconIC6";
+			this->lblBeaconIC6->ReadOnly = true;
 			this->lblBeaconIC6->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC6->TabIndex = 24;
 			// 
@@ -320,6 +333,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC5->Location = System::Drawing::Point(176, 128);
 			this->lblBeaconIC5->Name = L"lblBeaconIC5";
+			this->lblBeaconIC5->ReadOnly = true;
 			this->lblBeaconIC5->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC5->TabIndex = 23;
 			// 
@@ -327,6 +341,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC4->Location = System::Drawing::Point(176, 102);
 			this->lblBeaconIC4->Name = L"lblBeaconIC4";
+			this->lblBeaconIC4->ReadOnly = true;
 			this->lblBeaconIC4->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC4->TabIndex = 22;
 			// 
@@ -334,6 +349,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC3->Location = System::Drawing::Point(176, 75);
 			this->lblBeaconIC3->Name = L"lblBeaconIC3";
+			this->lblBeaconIC3->ReadOnly = true;
 			this->lblBeaconIC3->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC3->TabIndex = 21;
 			// 
@@ -341,6 +357,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC2->Location = System::Drawing::Point(176, 46);
 			this->lblBeaconIC2->Name = L"lblBeaconIC2";
+			this->lblBeaconIC2->ReadOnly = true;
 			this->lblBeaconIC2->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC2->TabIndex = 20;
 			// 
@@ -348,6 +365,7 @@ namespace QualificationTRC {
 			// 
 			this->lblBeaconIC1->Location = System::Drawing::Point(176, 18);
 			this->lblBeaconIC1->Name = L"lblBeaconIC1";
+			this->lblBeaconIC1->ReadOnly = true;
 			this->lblBeaconIC1->Size = System::Drawing::Size(15, 20);
 			this->lblBeaconIC1->TabIndex = 19;
 			// 
@@ -655,6 +673,117 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 			lblButStart->Enabled = false;
 			lblButStop->Enabled = false;
 			lblButGenerateReport->Enabled = false;
+			
+		 }
+private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArgs^  e) {
+			
+			
+			//SaveFileDialog
+			SaveFileDialog ^ saveFileDialog1 = gcnew SaveFileDialog();
+			saveFileDialog1->Filter = "Project File|*.txt";
+			saveFileDialog1->Title = "Save the project file...";
+			saveFileDialog1->ShowDialog();
+			
+
+			String^ sfileName = saveFileDialog1->FileName;
+			if(saveFileDialog1->FileName != "")
+			{
+				
+				StreamWriter^ NewProjFile = gcnew StreamWriter(sfileName);
+				NewProjFile->WriteLine(sfileName);//filename
+				NewProjFile->WriteLine(DateTime::Now);//Date of Creation
+				//List of Tests Still to Perform
+				NewProjFile->WriteLine("Tests to perform:");
+				NewProjFile->WriteLine("1: Normal Climb Engine Operating");
+				
+				
+				//Close File and assig to working file
+				sWorkingFile = saveFileDialog1->FileName;
+				NewProjFile->Close();
+				
+			}
+			
+		 }
+private: System::Void lblDialog_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		 }
+
+private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventArgs^  e) {
+			
+			 
+			 //OpenFileDialog
+			OpenFileDialog ^ openFileDialog1 = gcnew OpenFileDialog();
+			openFileDialog1->Title = "Open the project file...";
+			openFileDialog1->ShowDialog();
+			
+			
+			String^ str;
+			String^ sfileName =  openFileDialog1->FileName;
+			StreamReader^ streamActualFile = File::OpenText(sfileName);
+
+			
+			lblDialog->Text ="";
+			while ((str = streamActualFile->ReadLine()) != nullptr) 
+			{
+				lblDialog->Text += str;
+				lblDialog->Text += "\r\n";
+				
+			}
+			//Close File and assig to working file
+				sWorkingFile = openFileDialog1->FileName;
+				streamActualFile->Close();
+
+		 }
+private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArgs^  e) {
+			 
+			int iLoadTest = lblSelectBox->SelectedIndex;
+			
+			loadInitialConditions(iLoadTest);
+			
+			
+					
+		 }
+
+private: void loadInitialConditions(int iTestNumber)
+		 {
+			String^ sFileName = "test" + Convert::ToString(iTestNumber) + ".txt" + ".txt" ;
+			if (File::Exists(sFileName) == true)
+			{
+				//Check if file is not corrupted (erroneous number of lines)
+				int iLineCount = 0;
+				StreamReader^ streamActualFile = File::OpenText(sFileName);
+				while (streamActualFile->ReadLine() != nullptr)
+				{
+					iLineCount++;
+				}
+				streamActualFile->Close();
+				if ( iLineCount == 8)
+				{
+					//Read test Initial Conditions(IC)
+					StreamReader^ streamActualFile = File::OpenText(sFileName);
+					//Write IC in textLabels
+					lblIC1->Text = streamActualFile->ReadLine();
+					lblIC2->Text = streamActualFile->ReadLine();
+					lblIC3->Text = streamActualFile->ReadLine();
+					lblIC4->Text = streamActualFile->ReadLine();
+					lblIC5->Text = streamActualFile->ReadLine();
+					lblIC6->Text = streamActualFile->ReadLine();
+					lblIC7->Text = streamActualFile->ReadLine();
+					lblIC8->Text = streamActualFile->ReadLine();
+					streamActualFile->Close();
+					//Set to yellow IC Beacons
+					lblBeaconIC1->BackColor = System::Drawing::Color::Gold;
+				}
+				else
+				{
+					MessageBox::Show("Test file corrupted!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				}
+				
+			}		
+			else
+			{
+				MessageBox::Show("Test file not found!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+			}
+				 
 		 }
 };
 }
