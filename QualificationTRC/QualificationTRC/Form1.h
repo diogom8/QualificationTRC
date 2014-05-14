@@ -101,9 +101,15 @@ namespace QualificationTRC {
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::Label^  label17;
+	private: System::Windows::Forms::Button^  lblCheckIC;
+	private: System::Windows::Forms::CheckBox^  lblDispRes;
 
-			 //Globals
+
+		 //Globals
 		String^ sWorkingFile;
+		bool bDispRes;
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -124,6 +130,7 @@ namespace QualificationTRC {
 			this->lblButStart = (gcnew System::Windows::Forms::Button());
 			this->lblButStop = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->lblCheckIC = (gcnew System::Windows::Forms::Button());
 			this->lblBeaconIC8 = (gcnew System::Windows::Forms::TextBox());
 			this->lblBeaconIC7 = (gcnew System::Windows::Forms::TextBox());
 			this->lblBeaconIC6 = (gcnew System::Windows::Forms::TextBox());
@@ -158,8 +165,12 @@ namespace QualificationTRC {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
 			this->lblButGenerateReport = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->lblDispRes = (gcnew System::Windows::Forms::CheckBox());
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -212,7 +223,7 @@ namespace QualificationTRC {
 			this->lblDialog->Multiline = true;
 			this->lblDialog->Name = L"lblDialog";
 			this->lblDialog->ReadOnly = true;
-			this->lblDialog->Size = System::Drawing::Size(266, 342);
+			this->lblDialog->Size = System::Drawing::Size(199, 342);
 			this->lblDialog->TabIndex = 0;
 			this->lblDialog->Text = resources->GetString(L"lblDialog.Text");
 			this->lblDialog->TextChanged += gcnew System::EventHandler(this, &Form1::lblDialog_TextChanged);
@@ -222,7 +233,7 @@ namespace QualificationTRC {
 			this->lblSelectBox->FormattingEnabled = true;
 			this->lblSelectBox->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"1: Normal Climb Engine Operating", L"2: Engine Acceleration", 
 				L"3: Engine Deceleration", L"4: Pitch Controller Position vs Force", L"5: Roll Controller Position vs Force", L"6: Rudder Pedal Positon vs Force  "});
-			this->lblSelectBox->Location = System::Drawing::Point(285, 42);
+			this->lblSelectBox->Location = System::Drawing::Point(266, 27);
 			this->lblSelectBox->Name = L"lblSelectBox";
 			this->lblSelectBox->Size = System::Drawing::Size(314, 21);
 			this->lblSelectBox->TabIndex = 1;
@@ -230,7 +241,7 @@ namespace QualificationTRC {
 			// 
 			// lblButLoad
 			// 
-			this->lblButLoad->Location = System::Drawing::Point(291, 80);
+			this->lblButLoad->Location = System::Drawing::Point(267, 80);
 			this->lblButLoad->Name = L"lblButLoad";
 			this->lblButLoad->Size = System::Drawing::Size(75, 23);
 			this->lblButLoad->TabIndex = 2;
@@ -242,7 +253,7 @@ namespace QualificationTRC {
 			// 
 			this->lblButStart->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->lblButStart->Location = System::Drawing::Point(407, 80);
+			this->lblButStart->Location = System::Drawing::Point(383, 80);
 			this->lblButStart->Name = L"lblButStart";
 			this->lblButStart->Size = System::Drawing::Size(75, 23);
 			this->lblButStart->TabIndex = 3;
@@ -251,21 +262,22 @@ namespace QualificationTRC {
 			// 
 			// lblButStop
 			// 
-			this->lblButStop->BackColor = System::Drawing::Color::Transparent;
+			this->lblButStop->BackColor = System::Drawing::SystemColors::Control;
 			this->lblButStop->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->lblButStop->FlatAppearance->MouseDownBackColor = System::Drawing::Color::White;
 			this->lblButStop->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->lblButStop->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->lblButStop->Location = System::Drawing::Point(523, 80);
+			this->lblButStop->Location = System::Drawing::Point(499, 80);
 			this->lblButStop->Name = L"lblButStop";
 			this->lblButStop->Size = System::Drawing::Size(75, 23);
 			this->lblButStop->TabIndex = 4;
 			this->lblButStop->Text = L"Stop";
-			this->lblButStop->UseVisualStyleBackColor = false;
+			this->lblButStop->UseVisualStyleBackColor = true;
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->lblCheckIC);
 			this->groupBox1->Controls->Add(this->lblBeaconIC8);
 			this->groupBox1->Controls->Add(this->lblBeaconIC7);
 			this->groupBox1->Controls->Add(this->lblBeaconIC6);
@@ -298,12 +310,21 @@ namespace QualificationTRC {
 			this->groupBox1->Controls->Add(this->label3);
 			this->groupBox1->Controls->Add(this->label2);
 			this->groupBox1->Controls->Add(this->label1);
-			this->groupBox1->Location = System::Drawing::Point(290, 136);
+			this->groupBox1->Location = System::Drawing::Point(266, 109);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(308, 248);
+			this->groupBox1->Size = System::Drawing::Size(308, 275);
 			this->groupBox1->TabIndex = 5;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Initial Conditions";
+			// 
+			// lblCheckIC
+			// 
+			this->lblCheckIC->Location = System::Drawing::Point(187, 241);
+			this->lblCheckIC->Name = L"lblCheckIC";
+			this->lblCheckIC->Size = System::Drawing::Size(75, 23);
+			this->lblCheckIC->TabIndex = 10;
+			this->lblCheckIC->Text = L"Check";
+			this->lblCheckIC->UseVisualStyleBackColor = true;
 			// 
 			// lblBeaconIC8
 			// 
@@ -610,7 +631,7 @@ namespace QualificationTRC {
 			// 
 			this->progressBar1->Location = System::Drawing::Point(12, 390);
 			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(587, 19);
+			this->progressBar1->Size = System::Drawing::Size(562, 19);
 			this->progressBar1->TabIndex = 6;
 			// 
 			// lblButGenerateReport
@@ -628,11 +649,47 @@ namespace QualificationTRC {
 			this->lblButGenerateReport->Text = L"Generate Report";
 			this->lblButGenerateReport->UseVisualStyleBackColor = false;
 			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->InitialImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.InitialImage")));
+			this->pictureBox1->Location = System::Drawing::Point(644, 154);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(174, 178);
+			this->pictureBox1->TabIndex = 8;
+			this->pictureBox1->TabStop = false;
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->label17->Location = System::Drawing::Point(618, 348);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(227, 25);
+			this->label17->TabIndex = 9;
+			this->label17->Text = L"Simulator Qualification";
+			// 
+			// lblDispRes
+			// 
+			this->lblDispRes->AutoSize = true;
+			this->lblDispRes->Location = System::Drawing::Point(482, 54);
+			this->lblDispRes->Name = L"lblDispRes";
+			this->lblDispRes->Size = System::Drawing::Size(98, 17);
+			this->lblDispRes->TabIndex = 10;
+			this->lblDispRes->Text = L"Display Results";
+			this->lblDispRes->UseVisualStyleBackColor = true;
+			this->lblDispRes->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBox1_CheckedChanged_1);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(846, 411);
+			this->Controls->Add(this->lblDispRes);
+			this->Controls->Add(this->label17);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->lblButGenerateReport);
 			this->Controls->Add(this->progressBar1);
 			this->Controls->Add(this->groupBox1);
@@ -643,6 +700,7 @@ namespace QualificationTRC {
 			this->Controls->Add(this->lblDialog);
 			this->Controls->Add(this->menuStrip1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"Form1";
 			this->Text = L"TRC Simulators - Simulator Qualification";
@@ -651,6 +709,7 @@ namespace QualificationTRC {
 			this->menuStrip1->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -698,9 +757,9 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 				
 				
 				//Close File and assig to working file
-				sWorkingFile = saveFileDialog1->FileName;
+				sWorkingFile = sfileName;
 				NewProjFile->Close();
-				
+				loadProject(sfileName);
 			}
 			
 		 }
@@ -710,27 +769,15 @@ private: System::Void lblDialog_TextChanged(System::Object^  sender, System::Eve
 private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventArgs^  e) {
 			
 			 
-			 //OpenFileDialog
+			//OpenFileDialog
 			OpenFileDialog ^ openFileDialog1 = gcnew OpenFileDialog();
 			openFileDialog1->Title = "Open the project file...";
 			openFileDialog1->ShowDialog();
 			
+			String^ sFileName =  openFileDialog1->FileName;
+			loadProject(sFileName);
 			
-			String^ str;
-			String^ sfileName =  openFileDialog1->FileName;
-			StreamReader^ streamActualFile = File::OpenText(sfileName);
-
 			
-			lblDialog->Text ="";
-			while ((str = streamActualFile->ReadLine()) != nullptr) 
-			{
-				lblDialog->Text += str;
-				lblDialog->Text += "\r\n";
-				
-			}
-			//Close File and assig to working file
-				sWorkingFile = openFileDialog1->FileName;
-				streamActualFile->Close();
 
 		 }
 private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -770,8 +817,8 @@ private: void loadInitialConditions(int iTestNumber)
 					lblIC7->Text = streamActualFile->ReadLine();
 					lblIC8->Text = streamActualFile->ReadLine();
 					streamActualFile->Close();
-					//Set to yellow IC Beacons
-					lblBeaconIC1->BackColor = System::Drawing::Color::Gold;
+					//Change IC Beacons
+					//lblBeaconIC1->BackColor = System::Drawing::Color::Gold;
 				}
 				else
 				{
@@ -784,6 +831,26 @@ private: void loadInitialConditions(int iTestNumber)
 				MessageBox::Show("Test file not found!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
 				 
+		 }
+private: void loadProject(String^ sFileName)
+		 {
+			StreamReader^ streamActualFile = File::OpenText(sFileName);
+			String^ str;
+			
+			lblDialog->Text ="";
+			while ((str = streamActualFile->ReadLine()) != nullptr) 
+			{
+				lblDialog->Text += str;
+				lblDialog->Text += "\r\n";
+				
+			}
+			//Close File and assign to working file
+			streamActualFile->Close();
+			sWorkingFile = sFileName;
+
+		 }
+private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System::EventArgs^  e) {
+
 		 }
 };
 }
