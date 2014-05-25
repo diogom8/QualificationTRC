@@ -7,12 +7,15 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
+		x86|Win32 = x86|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.Debug|Win32.ActiveCfg = Debug|Win32
 		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.Debug|Win32.Build.0 = Debug|Win32
 		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.Release|Win32.ActiveCfg = Release|Win32
 		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.Release|Win32.Build.0 = Release|Win32
+		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.x86|Win32.ActiveCfg = Debug|Win32
+		{9F263A1C-B64C-43B8-A653-AD9515BE8EF8}.x86|Win32.Build.0 = Debug|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

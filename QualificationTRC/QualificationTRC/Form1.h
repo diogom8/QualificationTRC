@@ -1,8 +1,12 @@
 #pragma once
 #include <iostream>
 #include <fstream>
-
-
+//#include <windows.h>
+//#include <tchar.h>
+//#include <stdio.h>
+//#include "SimConnect.h"
+//HANDLE  hSimConnect = NULL;
+//#include <strsafe.h>
 
 namespace QualificationTRC {
 
@@ -46,7 +50,8 @@ namespace QualificationTRC {
 	private: System::Windows::Forms::ToolStripMenuItem^  lblMenuLoad;
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  helpToolStripMenuItem;
-	private: System::Windows::Forms::TextBox^  lblDialog;
+	private: System::Windows::Forms::TextBox^  lblDialogProjectName;
+
 	private: System::Windows::Forms::ComboBox^  lblSelectBox;
 	private: System::Windows::Forms::Button^  lblButLoad;
 	private: System::Windows::Forms::Button^  lblButStart;
@@ -108,8 +113,14 @@ namespace QualificationTRC {
 
 
 		 //Globals
-		String^ sWorkingFile;
-		bool bDispRes;
+		String^ sProjectFile;
+	private: System::Windows::Forms::ListBox^  lblListBoxTests;
+	private: System::Windows::Forms::Label^  label18;
+	private: System::Windows::Forms::Panel^  panel1;
+	private: System::Windows::Forms::Label^  label20;
+	private: System::Windows::Forms::TextBox^  lblDialogProjectDate;
+	private: System::Windows::Forms::Label^  label19;
+			 bool bDispRes;
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -122,9 +133,9 @@ namespace QualificationTRC {
 			this->projectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->lblMenuNew = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->lblMenuLoad = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->helpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->lblDialog = (gcnew System::Windows::Forms::TextBox());
+			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->lblDialogProjectName = (gcnew System::Windows::Forms::TextBox());
 			this->lblSelectBox = (gcnew System::Windows::Forms::ComboBox());
 			this->lblButLoad = (gcnew System::Windows::Forms::Button());
 			this->lblButStart = (gcnew System::Windows::Forms::Button());
@@ -168,20 +179,28 @@ namespace QualificationTRC {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->lblDispRes = (gcnew System::Windows::Forms::CheckBox());
+			this->lblListBoxTests = (gcnew System::Windows::Forms::ListBox());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->lblDialogProjectDate = (gcnew System::Windows::Forms::TextBox());
+			this->label19 = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->projectToolStripMenuItem, 
-				this->exitToolStripMenuItem, this->helpToolStripMenuItem});
+				this->helpToolStripMenuItem, this->exitToolStripMenuItem});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->Size = System::Drawing::Size(846, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
+			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &Form1::menuStrip1_ItemClicked);
 			// 
 			// projectToolStripMenuItem
 			// 
@@ -205,28 +224,27 @@ namespace QualificationTRC {
 			this->lblMenuLoad->Text = L"&Load";
 			this->lblMenuLoad->Click += gcnew System::EventHandler(this, &Form1::lblMenuLoad_Click);
 			// 
-			// exitToolStripMenuItem
-			// 
-			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(37, 20);
-			this->exitToolStripMenuItem->Text = L"&Exit";
-			// 
 			// helpToolStripMenuItem
 			// 
 			this->helpToolStripMenuItem->Name = L"helpToolStripMenuItem";
 			this->helpToolStripMenuItem->Size = System::Drawing::Size(44, 20);
 			this->helpToolStripMenuItem->Text = L"&Help";
 			// 
-			// lblDialog
+			// exitToolStripMenuItem
 			// 
-			this->lblDialog->Location = System::Drawing::Point(12, 42);
-			this->lblDialog->Multiline = true;
-			this->lblDialog->Name = L"lblDialog";
-			this->lblDialog->ReadOnly = true;
-			this->lblDialog->Size = System::Drawing::Size(199, 342);
-			this->lblDialog->TabIndex = 0;
-			this->lblDialog->Text = resources->GetString(L"lblDialog.Text");
-			this->lblDialog->TextChanged += gcnew System::EventHandler(this, &Form1::lblDialog_TextChanged);
+			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(37, 20);
+			this->exitToolStripMenuItem->Text = L"&Exit";
+			// 
+			// lblDialogProjectName
+			// 
+			this->lblDialogProjectName->Location = System::Drawing::Point(13, 25);
+			this->lblDialogProjectName->Multiline = true;
+			this->lblDialogProjectName->Name = L"lblDialogProjectName";
+			this->lblDialogProjectName->ReadOnly = true;
+			this->lblDialogProjectName->Size = System::Drawing::Size(199, 19);
+			this->lblDialogProjectName->TabIndex = 0;
+			this->lblDialogProjectName->TextChanged += gcnew System::EventHandler(this, &Form1::lblDialog_TextChanged);
 			// 
 			// lblSelectBox
 			// 
@@ -274,6 +292,7 @@ namespace QualificationTRC {
 			this->lblButStop->TabIndex = 4;
 			this->lblButStop->Text = L"Stop";
 			this->lblButStop->UseVisualStyleBackColor = true;
+			this->lblButStop->Click += gcnew System::EventHandler(this, &Form1::lblButStop_Click);
 			// 
 			// groupBox1
 			// 
@@ -665,11 +684,11 @@ namespace QualificationTRC {
 			this->label17->AutoSize = true;
 			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label17->Location = System::Drawing::Point(618, 348);
+			this->label17->Location = System::Drawing::Point(679, 348);
 			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(227, 25);
+			this->label17->Size = System::Drawing::Size(105, 25);
 			this->label17->TabIndex = 9;
-			this->label17->Text = L"Simulator Qualification";
+			this->label17->Text = L"QTG Tool";
 			// 
 			// lblDispRes
 			// 
@@ -682,11 +701,71 @@ namespace QualificationTRC {
 			this->lblDispRes->UseVisualStyleBackColor = true;
 			this->lblDispRes->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBox1_CheckedChanged_1);
 			// 
+			// lblListBoxTests
+			// 
+			this->lblListBoxTests->FormattingEnabled = true;
+			this->lblListBoxTests->HorizontalScrollbar = true;
+			this->lblListBoxTests->Location = System::Drawing::Point(13, 127);
+			this->lblListBoxTests->Name = L"lblListBoxTests";
+			this->lblListBoxTests->Size = System::Drawing::Size(199, 212);
+			this->lblListBoxTests->TabIndex = 11;
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Location = System::Drawing::Point(10, 6);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(43, 13);
+			this->label18->TabIndex = 12;
+			this->label18->Text = L"Project:";
+			// 
+			// panel1
+			// 
+			this->panel1->Controls->Add(this->label20);
+			this->panel1->Controls->Add(this->lblDialogProjectDate);
+			this->panel1->Controls->Add(this->label19);
+			this->panel1->Controls->Add(this->label18);
+			this->panel1->Controls->Add(this->lblListBoxTests);
+			this->panel1->Controls->Add(this->lblDialogProjectName);
+			this->panel1->Location = System::Drawing::Point(11, 27);
+			this->panel1->Name = L"panel1";
+			this->panel1->Size = System::Drawing::Size(243, 356);
+			this->panel1->TabIndex = 13;
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Location = System::Drawing::Point(10, 107);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(87, 13);
+			this->label20->TabIndex = 15;
+			this->label20->Text = L"Tests to Perform:";
+			this->label20->Click += gcnew System::EventHandler(this, &Form1::label20_Click);
+			// 
+			// lblDialogProjectDate
+			// 
+			this->lblDialogProjectDate->Location = System::Drawing::Point(13, 74);
+			this->lblDialogProjectDate->Multiline = true;
+			this->lblDialogProjectDate->Name = L"lblDialogProjectDate";
+			this->lblDialogProjectDate->ReadOnly = true;
+			this->lblDialogProjectDate->Size = System::Drawing::Size(199, 19);
+			this->lblDialogProjectDate->TabIndex = 14;
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Location = System::Drawing::Point(10, 58);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(87, 13);
+			this->label19->TabIndex = 13;
+			this->label19->Text = L"Date of Creation:";
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(846, 411);
+			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->lblDispRes);
 			this->Controls->Add(this->label17);
 			this->Controls->Add(this->pictureBox1);
@@ -697,19 +776,20 @@ namespace QualificationTRC {
 			this->Controls->Add(this->lblButStart);
 			this->Controls->Add(this->lblButLoad);
 			this->Controls->Add(this->lblSelectBox);
-			this->Controls->Add(this->lblDialog);
 			this->Controls->Add(this->menuStrip1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"Form1";
-			this->Text = L"TRC Simulators - Simulator Qualification";
+			this->Text = L"TRC Simulators - QTG Tool";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
+			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -730,7 +810,7 @@ private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::
 private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
 			// Freeze Buttons
 			lblButStart->Enabled = false;
-			lblButStop->Enabled = false;
+			lblButStop->Enabled = true;
 			lblButGenerateReport->Enabled = false;
 			
 		 }
@@ -739,8 +819,9 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 			
 			//SaveFileDialog
 			SaveFileDialog ^ saveFileDialog1 = gcnew SaveFileDialog();
-			saveFileDialog1->Filter = "Project File|*.txt";
+			saveFileDialog1->Filter = "Project File|*.proj";
 			saveFileDialog1->Title = "Save the project file...";
+			saveFileDialog1->OverwritePrompt = true;
 			saveFileDialog1->ShowDialog();
 			
 
@@ -752,12 +833,15 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 				NewProjFile->WriteLine(sfileName);//filename
 				NewProjFile->WriteLine(DateTime::Now);//Date of Creation
 				//List of Tests Still to Perform
-				NewProjFile->WriteLine("Tests to perform:");
 				NewProjFile->WriteLine("1: Normal Climb Engine Operating");
+				NewProjFile->WriteLine("2: Normal Climb Engine Operating");
+				NewProjFile->WriteLine("3: Normal Climb Engine Operating");
+				NewProjFile->WriteLine("4: Normal Climb Engine Operating");
+				NewProjFile->WriteLine("5: Normal Climb Engine Operating");
 				
 				
 				//Close File and assig to working file
-				sWorkingFile = sfileName;
+				sProjectFile = sfileName;
 				NewProjFile->Close();
 				loadProject(sfileName);
 			}
@@ -771,12 +855,15 @@ private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventAr
 			 
 			//OpenFileDialog
 			OpenFileDialog ^ openFileDialog1 = gcnew OpenFileDialog();
+			openFileDialog1->Filter = "Project File|*.proj";
 			openFileDialog1->Title = "Open the project file...";
 			openFileDialog1->ShowDialog();
 			
 			String^ sFileName =  openFileDialog1->FileName;
-			loadProject(sFileName);
-			
+			if (File::Exists(sFileName) == true)
+			{
+				loadProject(sFileName);
+			}
 			
 
 		 }
@@ -834,23 +921,54 @@ private: void loadInitialConditions(int iTestNumber)
 		 }
 private: void loadProject(String^ sFileName)
 		 {
-			StreamReader^ streamActualFile = File::OpenText(sFileName);
+			StreamReader^ streamTestFile = File::OpenText(sFileName);
 			String^ str;
 			
-			lblDialog->Text ="";
-			while ((str = streamActualFile->ReadLine()) != nullptr) 
+			//Initialize Dialog and List box
+			lblDialogProjectName->Text ="";
+			lblDialogProjectDate->Text ="";
+			lblListBoxTests->Items->Clear();
+			
+
+			//Read Project Name
+			str = streamTestFile->ReadLine();
+			lblDialogProjectName->Text = str;
+			//Read Project Date
+			str = streamTestFile->ReadLine();
+			lblDialogProjectDate->Text = str;
+			//Read test to perform
+			while ((str = streamTestFile->ReadLine()) != nullptr) 
 			{
-				lblDialog->Text += str;
-				lblDialog->Text += "\r\n";
+				lblListBoxTests->Items->Add(str);
+				
 				
 			}
 			//Close File and assign to working file
-			streamActualFile->Close();
-			sWorkingFile = sFileName;
+			streamTestFile->Close();
+			sProjectFile = sFileName;
 
 		 }
 private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System::EventArgs^  e) {
 
+		 }
+private: System::Void lblButStop_Click(System::Object^  sender, System::EventArgs^  e) {
+	/*HRESULT hr;
+
+    if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
+    {
+        lblDialogProjectDate->Text="Connected to Prepar3D!";   
+
+	  SimConnect_FlightLoad("C:\Users\Diogo\Documents\Prepar3D v2 Files\flightest");
+        hr = SimConnect_Close(hSimConnect);
+
+        lblDialogProjectDate->Text="\nDisconnected from Prepar3D";
+    } else
+		lblDialogProjectDate->Text="Failed to connect to Prepar3D";*/
+}
+		 
+private: System::Void label20_Click(System::Object^  sender, System::EventArgs^  e) {
+		 }
+private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
 		 }
 };
 }
