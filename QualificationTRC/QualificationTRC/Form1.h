@@ -1,3 +1,7 @@
+//------------------------------------------------------------------------------
+//Copyright (c) TRC Simulators.  All rights reserved.
+//Developed by Diogo Monteiro. 26/05/2014  
+//------------------------------------------------------------------------------
 #pragma once
 #include <iostream>
 #include <fstream>
