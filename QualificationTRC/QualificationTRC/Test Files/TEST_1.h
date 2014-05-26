@@ -68,7 +68,7 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
                 {
                     DWORD ObjectID = pObjData->dwObjectID;
                     Data_TEST_1 *pS = (Data_TEST_1*)&pObjData->dwData;
-                    if (SUCCEEDED(StringCbLengthA(&pS->title[0], sizeof(pS->title), NULL))) // security check (CHANGE TO DIFFERENTE SECURITY CHECK
+                    if () // security check (CHANGE TO DIFFERENTE SECURITY CHECK
                     {
                         //Write to File
                     } 

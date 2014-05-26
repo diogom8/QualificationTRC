@@ -5,12 +5,16 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <msclr\marshal_cppstd.h> //To convert System String to std::string
+#include <string>
+//SimConnec Stuff
 //#include <windows.h>
 //#include <tchar.h>
 //#include <stdio.h>
 //#include "SimConnect.h"
 //HANDLE  hSimConnect = NULL;
 //#include <strsafe.h>
+//#include "Test Files/TEST_1.h"
 
 namespace QualificationTRC {
 
@@ -928,6 +932,7 @@ private: void loadProject(String^ sFileName)
 			StreamReader^ streamTestFile = File::OpenText(sFileName);
 			String^ str;
 			
+			
 			//Initialize Dialog and List box
 			lblDialogProjectName->Text ="";
 			lblDialogProjectDate->Text ="";
@@ -936,7 +941,11 @@ private: void loadProject(String^ sFileName)
 
 			//Read Project Name
 			str = streamTestFile->ReadLine();
-			lblDialogProjectName->Text = str;
+			msclr::interop::marshal_context context;
+			std::string str_aux = context.marshal_as<std::string>(str);
+			int i = str_aux.rfind("\\");
+
+			//lblDialogProjectName->Text = str;
 			//Read Project Date
 			str = streamTestFile->ReadLine();
 			lblDialogProjectDate->Text = str;
