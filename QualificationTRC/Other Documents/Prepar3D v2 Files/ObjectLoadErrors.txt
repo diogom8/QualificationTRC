@@ -1,0 +1,2 @@
+Mission Warning: Resource path recommended to be relative to mission file location.  Modify ResourcePath in Flight File Editor to start with relative location: ".\".
+Mission Warning: One instance of ScenarioMetaData required.

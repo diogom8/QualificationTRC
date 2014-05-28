@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<SimBase.Document Type="MissionFile" version="1,0">
+    <WorldBase.Flight>
+    </WorldBase.Flight>
+    <MissionBuilder.MissionBuilder>
+    </MissionBuilder.MissionBuilder>
+    <WorldBase.AreasOfInterest>
+    </WorldBase.AreasOfInterest>
+    <WorldBase.Waypoints>
+    </WorldBase.Waypoints>
+</SimBase.Document>

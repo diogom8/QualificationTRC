@@ -21,7 +21,7 @@
 21: Stall Characteristics (2.c8) - Climb
 22: Stall Characteristics (2.c8) - Approach
 23: Phugoid Dynamics (2.c9)
-24: Short Perior Dynamics (2.c10)
+24: Short Period Dynamics (2.c10)
 25: Minimum Control Speed (2.d1)
 26: Roll Response (Rate) (2.d2) - Cruise
 27: Roll Response (Rate) (2.d2) - Approach

@@ -7,12 +7,13 @@
 #include <fstream>
 #include <msclr\marshal_cppstd.h> //To convert System String to std::string
 #include <string>
-//SimConnec Stuff
-//#include <windows.h>
+
+//SimConnect Stuff
+#include <windows.h>
 //#include <tchar.h>
 //#include <stdio.h>
-//#include "SimConnect.h"
-//HANDLE  hSimConnect = NULL;
+#include "SimConnect.h"
+HANDLE  hSimConnect = NULL;
 //#include <strsafe.h>
 //#include "Test Files/TEST_1.h"
 
@@ -257,8 +258,19 @@ namespace QualificationTRC {
 			// lblSelectBox
 			// 
 			this->lblSelectBox->FormattingEnabled = true;
-			this->lblSelectBox->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"1: Normal Climb Engine Operating", L"2: Engine Acceleration", 
-				L"3: Engine Deceleration", L"4: Pitch Controller Position vs Force", L"5: Roll Controller Position vs Force", L"6: Rudder Pedal Positon vs Force  "});
+			this->lblSelectBox->Items->AddRange(gcnew cli::array< System::Object^  >(37) {L"1: Normal Climb Engine Operating (1.c1)", 
+				L"2: Engine Acceleration (1.f1)", L"3: Engine Deceleration (1.f2)", L"4: Pitch Controller Position vs Force (2.a1) - Cruise", 
+				L"5: Pitch Controller Position vs Force (2.a1) - Approach", L"6: Roll Controller Position vs Force (2.a2) - Cruise/Approach", 
+				L"7: Roll Controller Position vs Force (2.a2) - Approach", L"8: Ruder Pedal Position vs Force (2.a3) - Cruise/Approach", L"9: Ruder Pedal Position vs Force (2.a3) - Approach", 
+				L"10: Pitch Trim Indicator vs Surface Position Calibration (2.a6)", L"11: Alignment of Cockpit Throttle vs Selected Engine Parameter (2.a8)", 
+				L"12: Power Change Dynamics (2.c1)", L"13: Flap Change Dynamics (2.c2)", L"14: Spoiler/Speedbrake Change Dynamics (2.c3)", L"15: Gear Change Dynamics (2.c4)", 
+				L"16: Longitudinal Trim (2.c5) - Cruise", L"17: Longitudinal Trim (2.c5) - Approach", L"18: Longitudinal Manoeuvring Stability (2.c6) - Cruise", 
+				L"19: Longitudinal Manoeuvring Stability (2.c6) - Approach", L"20: Longitudinal Static Stability (2.c6)", L"21: Stall Characteristics (2.c8) - Climb", 
+				L"22: Stall Characteristics (2.c8) - Approach", L"23: Phugoid Dynamics (2.c9)", L"24: Short Period Dynamics (2.c10)", L"25: Minimum Control Speed (2.d1)", 
+				L"26: Roll Response (Rate) (2.d2) - Cruise", L"27: Roll Response (Rate) (2.d2) - Approach", L"28: Step Input of Cockpit Roll Controller (2.d3)", 
+				L"29: Spiral Stability (2.d4) - Cruise", L"30: Spiral Stability (2.d4) - Approach", L"31: Engine Inoperative Trim (2.d5) - Climb", 
+				L"32: Engine Inoperative Trim (2.d5) - Approach", L"33: Rudder Response (2.d6)", L"34: Dutch Roll (2.d7) - Cruise", L"35: Dutch Roll (2.d7) - Approach", 
+				L"36: Steady State Sideslip (2.d8)", L"37: System Response Time (4.a1)"});
 			this->lblSelectBox->Location = System::Drawing::Point(266, 27);
 			this->lblSelectBox->Name = L"lblSelectBox";
 			this->lblSelectBox->Size = System::Drawing::Size(314, 21);
@@ -285,6 +297,7 @@ namespace QualificationTRC {
 			this->lblButStart->TabIndex = 3;
 			this->lblButStart->Text = L"Start";
 			this->lblButStart->UseVisualStyleBackColor = true;
+			this->lblButStart->Click += gcnew System::EventHandler(this, &Form1::lblButStart_Click);
 			// 
 			// lblButStop
 			// 
@@ -675,6 +688,7 @@ namespace QualificationTRC {
 			this->lblButGenerateReport->TabIndex = 7;
 			this->lblButGenerateReport->Text = L"Generate Report";
 			this->lblButGenerateReport->UseVisualStyleBackColor = false;
+			this->lblButGenerateReport->Click += gcnew System::EventHandler(this, &Form1::lblButGenerateReport_Click);
 			// 
 			// pictureBox1
 			// 
@@ -817,9 +831,9 @@ private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::
 		 }
 private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
 			// Freeze Buttons
-			lblButStart->Enabled = false;
-			lblButStop->Enabled = true;
-			lblButGenerateReport->Enabled = false;
+			//lblButStart->Enabled = false;
+			//lblButStop->Enabled = true;
+			//lblButGenerateReport->Enabled = false;
 			
 		 }
 private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -840,12 +854,19 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 				StreamWriter^ NewProjFile = gcnew StreamWriter(sfileName);
 				NewProjFile->WriteLine(sfileName);//filename
 				NewProjFile->WriteLine(DateTime::Now);//Date of Creation
-				//List of Tests Still to Perform
-				NewProjFile->WriteLine("1: Normal Climb Engine Operating");
-				NewProjFile->WriteLine("2: Normal Climb Engine Operating");
-				NewProjFile->WriteLine("3: Normal Climb Engine Operating");
-				NewProjFile->WriteLine("4: Normal Climb Engine Operating");
-				NewProjFile->WriteLine("5: Normal Climb Engine Operating");
+				
+				//List of Tests to Perform
+				StreamReader^ sFile = File::OpenText("Test Files\\TestsToPerform.txt");
+				String^ str;
+				
+				while ((str = sFile->ReadLine()) != nullptr) 
+				{
+					NewProjFile->WriteLine(str); 
+				
+				
+				}
+				sFile->Close();
+				
 				
 				
 				//Close File and assig to working file
@@ -948,8 +969,7 @@ private: void loadProject(String^ sFileName)
 				str_aux=str_aux.erase (0,31);
 				lblDialogProjectName->Text = gcnew String(str_aux.c_str());
 
-			//lblDialogProjectName->Text = str;
-			
+						
 			//Read Project Date
 			str = streamTestFile->ReadLine();
 			lblDialogProjectDate->Text = str;
@@ -969,24 +989,46 @@ private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System
 
 		 }
 private: System::Void lblButStop_Click(System::Object^  sender, System::EventArgs^  e) {
-	/*HRESULT hr;
-
-    if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
-    {
-        lblDialogProjectDate->Text="Connected to Prepar3D!";   
-
-	  SimConnect_FlightLoad("C:\Users\Diogo\Documents\Prepar3D v2 Files\flightest");
-        hr = SimConnect_Close(hSimConnect);
+	HRESULT hr;
+		hr = SimConnect_Close(hSimConnect);
 
         lblDialogProjectDate->Text="\nDisconnected from Prepar3D";
-    } else
-		lblDialogProjectDate->Text="Failed to connect to Prepar3D";*/
 }
 		 
 private: System::Void label20_Click(System::Object^  sender, System::EventArgs^  e) {
 		 }
 private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
 		 }
+private: System::Void lblButStart_Click(System::Object^  sender, System::EventArgs^  e) {
+		HRESULT hr;
+
+		if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
+		{
+			lblDialogProjectDate->Text="Connected to Prepar3D!";   
+
+		  //SimConnect_FlightLoad("C:\Users\Diogo\Documents\Prepar3D v2 Files\flightest");
+        
+		} else
+			lblDialogProjectDate->Text="Failed to connect to Prepar3D";
+		}
+private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
+
+			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Tests and Debugging", NULL, 0, 0, 0)))
+			{
+				// Sending the title of the vehicle
+				//SimConnect_ChangeVehicle(hSimConnect, "F-35A Lightning II");
+				SimConnect_FlightLoad(hSimConnect,"C:\\Users\\Diogo & Suhas\\Documents\\Prepar3D v2 Files\\flightfile.fxml");
+
+				
+			}
+			else lblDialogProjectDate->Text="Error Loading File";
+
+			if (File::Exists("C:\\Users\\Diogo & Suhas\\Documents\\Prepar3D v2 Files\\flightfile.fxml"))
+			{
+				lblDialogProjectName->Text="existe";
+			}
+			else lblDialogProjectDate->Text="nao existe";
+		}
 };
 }
 
