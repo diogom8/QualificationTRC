@@ -941,11 +941,15 @@ private: void loadProject(String^ sFileName)
 
 			//Read Project Name
 			str = streamTestFile->ReadLine();
-			msclr::interop::marshal_context context;
-			std::string str_aux = context.marshal_as<std::string>(str);
-			int i = str_aux.rfind("\\");
+				//Manipulate to get project name out of directory
+				msclr::interop::marshal_context context;
+				std::string str_aux = context.marshal_as<std::string>(str);
+				int i = str_aux.rfind("\\");
+				str_aux=str_aux.erase (0,31);
+				lblDialogProjectName->Text = gcnew String(str_aux.c_str());
 
 			//lblDialogProjectName->Text = str;
+			
 			//Read Project Date
 			str = streamTestFile->ReadLine();
 			lblDialogProjectDate->Text = str;

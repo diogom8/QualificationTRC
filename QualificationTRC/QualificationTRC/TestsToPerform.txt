@@ -1,0 +1,37 @@
+1: Normal Climb Engine Operating (1.c1)
+2: Engine Acceleration (1.f1)
+3: Engine Deceleration (1.f2)
+4: Pitch Controller Position vs Force (2.a1) - Cruise
+5: Pitch Controller Position vs Force (2.a1) - Approach
+6: Roll Controller Position vs Force (2.a2) - Cruise/Approach
+7: Roll Controller Position vs Force (2.a2) - Approach
+8: Ruder Pedal Position vs Force (2.a3) - Cruise/Approach
+9: Ruder Pedal Position vs Force (2.a3) - Approach
+10: Pitch Trim Indicator vs Surface Position Calibration (2.a6)
+11: Alignment of Cockpit Throttle vs Selected Engine Parameter (2.a8)
+12: Power Change Dynamics (2.c1)
+13: Flap Change Dynamics (2.c2)
+14: Spoiler/Speedbrake Change Dynamics (2.c3)
+15: Gear Change Dynamics (2.c4)
+16: Longitudinal Trim (2.c5) - Cruise
+17: Longitudinal Trim (2.c5) - Approach
+18: Longitudinal Manoeuvring Stability (2.c6) - Cruise
+19: Longitudinal Manoeuvring Stability (2.c6) - Approach
+20: Longitudinal Static Stability (2.c6)
+21: Stall Characteristics (2.c8) - Climb
+22: Stall Characteristics (2.c8) - Approach
+23: Phugoid Dynamics (2.c9)
+24: Short Perior Dynamics (2.c10)
+25: Minimum Control Speed (2.d1)
+26: Roll Response (Rate) (2.d2) - Cruise
+27: Roll Response (Rate) (2.d2) - Approach
+28: Step Input of Cockpit Roll Controller (2.d3)
+29: Spiral Stability (2.d4) - Cruise
+30: Spiral Stability (2.d4) - Approach
+31: Engine Inoperative Trim (2.d5) - Climb
+32: Engine Inoperative Trim (2.d5) - Approach
+33: Rudder Response (2.d6)
+34: Dutch Roll (2.d7) - Cruise
+35: Dutch Roll (2.d7) - Approach
+36: Steady State Sideslip (2.d8)
+37: System Response Time (4.a1)
