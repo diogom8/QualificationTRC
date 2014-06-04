@@ -8,25 +8,36 @@
 #include <msclr\marshal_cppstd.h> //To convert System String to std::string
 #include <string>
 
+using namespace System;
+using namespace System::Runtime::InteropServices;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
+using namespace std;
+using namespace System::IO;
+
 //SimConnect Stuff
 #include <windows.h>
-//#include <tchar.h>
-//#include <stdio.h>
 #include "SimConnect.h"
 HANDLE  hSimConnect = NULL;
 //#include <strsafe.h>
 //#include "Test Files/TEST_1.h"
+#include "Test Files/TEST_SIMCONNECT_LIST.h"
+
 
 namespace QualificationTRC {
 
-	using namespace System;
+	/*using namespace System;
+	using namespace System::Runtime::InteropServices;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace std;
-	using namespace System::IO;
+	using namespace System::IO;*/
 	/// <summary>
 	/// Summary for Form1
 	/// </summary>
@@ -898,17 +909,25 @@ private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventAr
 		 }
 private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArgs^  e) {
 			 
-			int iLoadTest = lblSelectBox->SelectedIndex;
+			int iTestNumber = lblSelectBox->SelectedIndex;
+			iTestNumber++;
 			
-			loadInitialConditions(iLoadTest);
+			loadInitialConditions(iTestNumber);
+			if (LoadFlightFileSimConnect(iTestNumber) != true)
+			{
+				MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+			}
 			
 			
 					
 		 }
+ 
+	 
+		 
 
 private: void loadInitialConditions(int iTestNumber)
 		 {
-			String^ sFileName = "test" + Convert::ToString(iTestNumber) + ".txt" + ".txt" ;
+			String^ sFileName = "Test Files/IC_TEST_" + Convert::ToString(iTestNumber) + ".txt" ;
 			if (File::Exists(sFileName) == true)
 			{
 				//Check if file is not corrupted (erroneous number of lines)
@@ -938,13 +957,34 @@ private: void loadInitialConditions(int iTestNumber)
 				}
 				else
 				{
+					//clear textLabels
+					lblIC1->Text = "";
+					lblIC2->Text = "";
+					lblIC3->Text = "";
+					lblIC4->Text = "";
+					lblIC5->Text = "";
+					lblIC6->Text = "";
+					lblIC7->Text = "";
+					lblIC8->Text = "";
 					MessageBox::Show("Test file corrupted!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					
+					
 				}
 				
 			}		
 			else
 			{
+				//clear textLabels
+				lblIC1->Text = "";
+				lblIC2->Text = "";
+				lblIC3->Text = "";
+				lblIC4->Text = "";
+				lblIC5->Text = "";
+				lblIC6->Text = "";
+				lblIC7->Text = "";
+				lblIC8->Text = "";
 				MessageBox::Show("Test file not found!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				
 			}
 				 
 		 }
@@ -962,12 +1002,12 @@ private: void loadProject(String^ sFileName)
 
 			//Read Project Name
 			str = streamTestFile->ReadLine();
-				//Manipulate to get project name out of directory
-				msclr::interop::marshal_context context;
-				std::string str_aux = context.marshal_as<std::string>(str);
-				int i = str_aux.rfind("\\");
-				str_aux=str_aux.erase (0,31);
-				lblDialogProjectName->Text = gcnew String(str_aux.c_str());
+			//Manipulate to get project name out of directory
+			msclr::interop::marshal_context context;
+			std::string str_aux = context.marshal_as<std::string>(str);
+			int i = str_aux.rfind("\\");
+			str_aux=str_aux.erase (0,31);
+			lblDialogProjectName->Text = gcnew String(str_aux.c_str());
 
 						
 			//Read Project Date
