@@ -7,6 +7,7 @@
 #include <fstream>
 #include <msclr\marshal_cppstd.h> //To convert System String to std::string
 #include <string>
+//#include "chplot.h" - 30 day free trial library(c:silib:include)
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -21,10 +22,25 @@ using namespace System::IO;
 //SimConnect Stuff
 #include <windows.h>
 #include "SimConnect.h"
-HANDLE  hSimConnect = NULL;
 //#include <strsafe.h>
-//#include "Test Files/TEST_1.h"
+
+
+
+
+
+
+//Globals
+HANDLE  hSimConnect = NULL;
+bool bQuitTest = false;
+bool bTestStarted = false;
+int check = 0;
+
+
+
+#include "Test Files/TEST_1.h"
 #include "Test Files/TEST_SIMCONNECT_LIST.h"
+
+
 
 
 namespace QualificationTRC {
@@ -134,6 +150,7 @@ namespace QualificationTRC {
 
 		 //Globals
 		String^ sProjectFile;
+		
 	private: System::Windows::Forms::ListBox^  lblListBoxTests;
 	private: System::Windows::Forms::Label^  label18;
 	private: System::Windows::Forms::Panel^  panel1;
@@ -918,7 +935,7 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 				MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
 			
-			
+			SimConnect_Close(hSimConnect);
 					
 		 }
  
@@ -1029,10 +1046,14 @@ private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System
 
 		 }
 private: System::Void lblButStop_Click(System::Object^  sender, System::EventArgs^  e) {
-	HRESULT hr;
-		hr = SimConnect_Close(hSimConnect);
+	
+		//If some error arises try including line HRESULT hr; and hr = SimConnect_Close(hSimConnect);
 
-        lblDialogProjectDate->Text="\nDisconnected from Prepar3D";
+		bQuitTest = true;
+			 
+		//SimConnect_Close(hSimConnect);
+
+        //lblDialogProjectDate->Text="\nDisconnected from Prepar3D";
 }
 		 
 private: System::Void label20_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -1040,17 +1061,32 @@ private: System::Void label20_Click(System::Object^  sender, System::EventArgs^ 
 private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
 		 }
 private: System::Void lblButStart_Click(System::Object^  sender, System::EventArgs^  e) {
-		HRESULT hr;
+		
+	
 
-		if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
+		/*if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
 		{
 			lblDialogProjectDate->Text="Connected to Prepar3D!";   
 
 		  //SimConnect_FlightLoad("C:\Users\Diogo\Documents\Prepar3D v2 Files\flightest");
         
 		} else
-			lblDialogProjectDate->Text="Failed to connect to Prepar3D";
-		}
+			lblDialogProjectDate->Text="Failed to connect to Prepar3D";*/
+		 //ofstream myfile;
+		 //myfile.open ("DATA_TESTE_1.txt");
+		 //myfile.close();
+		 check = 3;
+		 if(Start_TEST_1() == false)
+		 {
+			 lblDialogProjectDate->Text="\nFaile to connect to Prepar3D!";
+		 }
+
+		 lblDialogProjectDate->Text = Convert::ToString(check);
+		 
+		 
+		 
+		 
+		 }
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
 
 			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Tests and Debugging", NULL, 0, 0, 0)))

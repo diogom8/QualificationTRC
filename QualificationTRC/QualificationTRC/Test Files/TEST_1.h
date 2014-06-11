@@ -5,7 +5,7 @@
 //  SimConnect Data Request for Test 1: Normal Climb Engine Operating (1c1)
 //  
 //	Description:
-//				After a flight has loaded, request the lat/lon/alt of the user 
+//				After a flight has loaded, request the DEFINE SIMULATIONVARIABLES of the user 
 //				aircraft
 //
 //
@@ -16,12 +16,13 @@
 
 struct Data_TEST_1
 {
-    double Altitude;
-	double SimTime;
+    double ElevatorPosition;
+	
 };
 
 static enum EVENT_ID{
     EVENT_SIM_START,
+	EVENT_SIM_PAUSED,
 };
 
 static enum DATA_DEFINE_ID_TEST_1 {
@@ -32,11 +33,23 @@ static enum DATA_REQUEST_ID_TEST_1 {
     DataRequest_TEST_1,
 };
 
+static enum PAUSESTATE
+{
+	UNPAUSED=0,
+	PAUSED
+};
+
 
 void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
     HRESULT hr;
-    
+    //ofstream myfile;
+	
+	//myfile.open ("DATA_TESTE_1.txt",ios::out | ios::app);
+	
+
+
+
     switch(pData->dwID)
     {
         case SIMCONNECT_RECV_ID_EVENT:
@@ -49,7 +62,13 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
                     
 					// Now the sim is running, request information on the user aircraft
                     hr = SimConnect_RequestDataOnSimObjectType(hSimConnect, DataRequest_TEST_1, DataDefinition_TEST_1, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
-                    
+                    check = -1;
+					break;
+					
+				case EVENT_SIM_PAUSED:
+					
+					bQuitTest = true;
+					
 					break;
 
                 default:
@@ -66,12 +85,22 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
             {
                 case DataRequest_TEST_1:
                 {
+					
                     DWORD ObjectID = pObjData->dwObjectID;
                     Data_TEST_1 *pS = (Data_TEST_1*)&pObjData->dwData;
-                    if () // security check (CHANGE TO DIFFERENTE SECURITY CHECK
-                    {
-                        //Write to File
-                    } 
+                    check = 4;
+					
+					//if () // security check (CHANGE TO DIFFERENTE SECURITY CHECK
+                    //{
+                        
+						
+						//myfile << pS->ElevatorPosition << "\n";
+						
+						
+						
+						
+						//Write to File
+                    //} 
                     break;
                 }
 
@@ -84,7 +113,8 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 
         case SIMCONNECT_RECV_ID_QUIT:
         {
-            QuitTest = 1;
+            bQuitTest = true;
+			
             break;
         }
 
@@ -92,16 +122,25 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
             //printf("\nReceived:%d",pData->dwID);
             break;
     }
+
+	//myfile.close();	
+	
+	
+	
 }
 
 
-void Start_TEST_1 ()
+bool Start_TEST_1 ()
 {
 	HRESULT hr;
-	QuitTest = 0; //Should be Global Bool and can be included before Start_TEST is called
-    if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Request Data", NULL, 0, 0, 0)))
+	bool ret = false;
+	
+	ret = SUCCEEDED(SimConnect_Open(&hSimConnect, "Request Data", NULL, 0, 0, 0));
+	
+    if (ret == true)
     {
-        printf("\nConnected to Prepar3D!");   
+        
+		//lblDialogProjectDate->Text="\nConnected to Prepar3D!";
         
         // Set up the data definition, but do not yet do anything with it
         hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "Plane Altitude", "feet"); //Example
@@ -109,21 +148,27 @@ void Start_TEST_1 ()
 
         // Request an event when the simulation starts
         hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_START, "SimStart");
-
-        while( QuitTest == 0 )
+		hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_PAUSED, "Paused");
+		
+		bQuitTest = false;
+        while( bQuitTest == false )
         {
+			hr = SimConnect_RequestDataOnSimObjectType(hSimConnect, DataRequest_TEST_1, DataDefinition_TEST_1, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
             SimConnect_CallDispatch(hSimConnect, GetData_TEST_1, NULL);
             Sleep(1);
         } 
-
+		
         /*Pause Simulator*/ //not necessary but elegant
 		//UNDER DEVELOPMENT
 		
 		hr = SimConnect_Close(hSimConnect);// Close Server Connection
+		 //lblDialogProjectDate->Text="\nDisconnected from Prepar3D"
 		
 		/* Proceed with Test Analysis*/
 		//UNDER DEVELOPMENT
     }
+	
+	return ret;
 
 }
 

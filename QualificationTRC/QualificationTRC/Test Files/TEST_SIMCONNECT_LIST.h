@@ -8,7 +8,7 @@
 //				Selects simulation file to load by simconnect
 //------------------------------------------------------------------------------
 
-int LoadFlightFileSimConnect(int iTestNumber)
+bool LoadFlightFileSimConnect(int iTestNumber)
 {
 	
 	if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
@@ -21,7 +21,7 @@ int LoadFlightFileSimConnect(int iTestNumber)
 				break;
 		}	
 	}
-	else MessageBox::Show("Failed to connect to Prepar3D! Check connection.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+	else {MessageBox::Show("Failed to connect to Prepar3D! Check connection.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);return true;}
 	
 
 
