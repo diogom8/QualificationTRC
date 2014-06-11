@@ -1064,24 +1064,16 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		
 	
 
-		/*if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
+		StreamWriter^ myfile = gcnew StreamWriter("DATA_TESTE_1.txt");
+		myfile->Close();
+		
+		check = 3;
+		if(Start_TEST_1() == false)
 		{
-			lblDialogProjectDate->Text="Connected to Prepar3D!";   
-
-		  //SimConnect_FlightLoad("C:\Users\Diogo\Documents\Prepar3D v2 Files\flightest");
-        
-		} else
-			lblDialogProjectDate->Text="Failed to connect to Prepar3D";*/
-		 //ofstream myfile;
-		 //myfile.open ("DATA_TESTE_1.txt");
-		 //myfile.close();
-		 check = 3;
-		 if(Start_TEST_1() == false)
-		 {
 			 lblDialogProjectDate->Text="\nFaile to connect to Prepar3D!";
-		 }
+		}
 
-		 lblDialogProjectDate->Text = Convert::ToString(check);
+		lblDialogProjectDate->Text = Convert::ToString(check);
 		 
 		 
 		 
