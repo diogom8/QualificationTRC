@@ -30,15 +30,19 @@ using namespace System::IO;
 
 
 //Globals
-HANDLE  hSimConnect = NULL;
+HANDLE  hSimConnect = NULL; //Server Identifier for SimConnect
 bool bQuitTest = false;
 bool bTestStarted = false;
 int check = 0;
+char fCheckIC = 0x00;
+double InitialConditions[8];
 
-
-
-#include "Test Files/TEST_1.h"
+bool Start_TEST_1(void);
+//Test Files
 #include "Test Files/TEST_SIMCONNECT_LIST.h"
+#include "Test Files/TEST_1.h"
+#include "Test Files/TEST_IC.h"
+
 
 
 
@@ -393,6 +397,7 @@ namespace QualificationTRC {
 			this->lblCheckIC->TabIndex = 10;
 			this->lblCheckIC->Text = L"Check";
 			this->lblCheckIC->UseVisualStyleBackColor = true;
+			this->lblCheckIC->Click += gcnew System::EventHandler(this, &Form1::lblCheckIC_Click);
 			// 
 			// lblBeaconIC8
 			// 
@@ -845,6 +850,8 @@ namespace QualificationTRC {
 
 		}
 #pragma endregion
+
+
 	private: System::Void label1_Click(System::Object^  sender, System::EventArgs^  e) {
 			 }
 private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -944,6 +951,7 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 
 private: void loadInitialConditions(int iTestNumber)
 		 {
+			String^ str;
 			String^ sFileName = "Test Files/IC_TEST_" + Convert::ToString(iTestNumber) + ".txt" ;
 			if (File::Exists(sFileName) == true)
 			{
@@ -959,15 +967,24 @@ private: void loadInitialConditions(int iTestNumber)
 				{
 					//Read test Initial Conditions(IC)
 					StreamReader^ streamActualFile = File::OpenText(sFileName);
-					//Write IC in textLabels
-					lblIC1->Text = streamActualFile->ReadLine();
-					lblIC2->Text = streamActualFile->ReadLine();
-					lblIC3->Text = streamActualFile->ReadLine();
-					lblIC4->Text = streamActualFile->ReadLine();
-					lblIC5->Text = streamActualFile->ReadLine();
-					lblIC6->Text = streamActualFile->ReadLine();
-					lblIC7->Text = streamActualFile->ReadLine();
-					lblIC8->Text = streamActualFile->ReadLine();
+					//Write IC in textLabels and assign to InitialConditions array
+					str = streamActualFile->ReadLine(); InitialConditions[0] = Convert::ToDouble(str);
+					lblIC1->Text = str;//1
+					str = streamActualFile->ReadLine(); InitialConditions[1] = Convert::ToDouble(str);
+					lblIC2->Text = str;//2
+					str = streamActualFile->ReadLine(); InitialConditions[2] = Convert::ToDouble(str);
+					lblIC3->Text = str;//3
+					str = streamActualFile->ReadLine(); InitialConditions[3] = Convert::ToDouble(str);
+					lblIC4->Text = str;//4
+					str = streamActualFile->ReadLine(); InitialConditions[4] = Convert::ToDouble(str);
+					lblIC5->Text = str;//5
+					str = streamActualFile->ReadLine(); InitialConditions[5] = Convert::ToDouble(str);
+					lblIC6->Text = str;//6
+					str = streamActualFile->ReadLine(); InitialConditions[6] = Convert::ToDouble(str);
+					lblIC7->Text = str;//7
+					str = streamActualFile->ReadLine(); InitialConditions[7] = Convert::ToDouble(str);
+					lblIC8->Text = str;//8
+				
 					streamActualFile->Close();
 					//Change IC Beacons
 					//lblBeaconIC1->BackColor = System::Drawing::Color::Gold;
@@ -1049,7 +1066,7 @@ private: System::Void lblButStop_Click(System::Object^  sender, System::EventArg
 	
 		//If some error arises try including line HRESULT hr; and hr = SimConnect_Close(hSimConnect);
 
-		bQuitTest = true;
+		
 			 
 		//SimConnect_Close(hSimConnect);
 
@@ -1081,22 +1098,96 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		 }
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
 
-			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Tests and Debugging", NULL, 0, 0, 0)))
-			{
-				// Sending the title of the vehicle
-				//SimConnect_ChangeVehicle(hSimConnect, "F-35A Lightning II");
-				SimConnect_FlightLoad(hSimConnect,"C:\\Users\\Diogo & Suhas\\Documents\\Prepar3D v2 Files\\flightfile.fxml");
+			HRESULT hr;
+			static enum EVENT_ID {
+				 EVENT_PAUSE,
+				 EVENT_UNPAUSE,
+			};
 
-				
-			}
-			else lblDialogProjectDate->Text="Error Loading File";
-
-			if (File::Exists("C:\\Users\\Diogo & Suhas\\Documents\\Prepar3D v2 Files\\flightfile.fxml"))
+			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Send Event A", NULL, 0, 0, 0)))
 			{
-				lblDialogProjectName->Text="existe";
+				// 2. Setting an event value
+				hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EVENT_UNPAUSE, "PAUSE_OFF");
+				// Set the selected DME to 2
+				SimConnect_TransmitClientEvent(hSimConnect, 0, EVENT_UNPAUSE, 0, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+				Sleep(100);
+				// 2. Setting an event value
+				hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EVENT_PAUSE, "PAUSE_ON");
+				// Set the selected DME to 2
+				SimConnect_TransmitClientEvent(hSimConnect, 0, EVENT_PAUSE, 0, SIMCONNECT_GROUP_PRIORITY_DEFAULT, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+
 			}
-			else lblDialogProjectDate->Text="nao existe";
+			else
+			{
+				lblDialogProjectName->Text = "Falhou";
+			}
 		}
+private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArgs^  e) {
+
+			
+		fCheckIC = 0;
+		if(Start_CHECK_IC() == false)
+		{
+			 lblDialogProjectDate->Text="\nFaile to connect to Prepar3D!";
+		}	
+			
+		//Throttle
+		if((fCheckIC & 0x01) != 0)
+			lblBeaconIC1->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC1->BackColor = System::Drawing::Color::Red;
+
+		//Mixture
+		if((fCheckIC & 0x02) != 0)
+			lblBeaconIC2->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC2->BackColor = System::Drawing::Color::Red;
+
+		//Trim
+		if((fCheckIC & 0x04) != 0)
+			lblBeaconIC3->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC3->BackColor = System::Drawing::Color::Red;
+
+		//Flaps
+		if((fCheckIC & 0x08) != 0)
+		{
+			lblBeaconIC4->BackColor = System::Drawing::Color::Green;
+			lblBeaconIC5->BackColor = System::Drawing::Color::Green;
+		}
+		else
+		{
+			lblBeaconIC4->BackColor = System::Drawing::Color::Red;
+			lblBeaconIC5->BackColor = System::Drawing::Color::Red;
+		}
+			
+		//Pitch Controller
+		if((fCheckIC & 0x10) != 0)
+			lblBeaconIC6->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC6->BackColor = System::Drawing::Color::Red;
+
+		//Roll Controller
+		if((fCheckIC & 0x20) != 0)
+			lblBeaconIC7->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC7->BackColor = System::Drawing::Color::Red;
+
+		//Rudder Controller
+		if((fCheckIC & 0x40) != 0)
+			lblBeaconIC8->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC8->BackColor = System::Drawing::Color::Red;
+
+
+		lblListBoxTests->Items->Add(Convert::ToString(InitialConditions[0]));
+		lblDialogProjectName->Text = Convert::ToString(fCheckIC);
+		lblDialogProjectDate->Text = Convert::ToString(check); 
+	}	 
+		 
 };
+
+
+
 }
 
