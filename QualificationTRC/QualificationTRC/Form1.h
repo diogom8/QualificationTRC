@@ -33,11 +33,12 @@ using namespace System::IO;
 HANDLE  hSimConnect = NULL; //Server Identifier for SimConnect
 bool bQuitTest = false;
 bool bTestStarted = false;
-int check = 0;
+double check = 0;
+double dInitTime;
 char fCheckIC = 0x00;
 double InitialConditions[8];
 
-bool Start_TEST_1(void);
+//bool Start_TEST_1(void);
 //Test Files
 #include "Test Files/TEST_SIMCONNECT_LIST.h"
 #include "Test Files/TEST_1.h"
@@ -152,8 +153,8 @@ namespace QualificationTRC {
 	private: System::Windows::Forms::CheckBox^  lblDispRes;
 
 
-		 //Globals
-		String^ sProjectFile;
+	//Globals
+	String^ sProjectFile;
 		
 	private: System::Windows::Forms::ListBox^  lblListBoxTests;
 	private: System::Windows::Forms::Label^  label18;
@@ -554,59 +555,76 @@ namespace QualificationTRC {
 			// 
 			// lblIC8
 			// 
+			this->lblIC8->BackColor = System::Drawing::SystemColors::Window;
+			this->lblIC8->Enabled = false;
 			this->lblIC8->Location = System::Drawing::Point(192, 212);
 			this->lblIC8->Name = L"lblIC8";
+			this->lblIC8->ReadOnly = true;
 			this->lblIC8->Size = System::Drawing::Size(64, 20);
 			this->lblIC8->TabIndex = 15;
 			// 
 			// lblIC7
 			// 
+			this->lblIC7->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC7->Location = System::Drawing::Point(192, 184);
 			this->lblIC7->Name = L"lblIC7";
+			this->lblIC7->ReadOnly = true;
 			this->lblIC7->Size = System::Drawing::Size(64, 20);
 			this->lblIC7->TabIndex = 14;
 			// 
 			// lblIC6
 			// 
+			this->lblIC6->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC6->Location = System::Drawing::Point(192, 157);
 			this->lblIC6->Name = L"lblIC6";
+			this->lblIC6->ReadOnly = true;
 			this->lblIC6->Size = System::Drawing::Size(64, 20);
 			this->lblIC6->TabIndex = 13;
 			this->lblIC6->TextChanged += gcnew System::EventHandler(this, &Form1::textBox6_TextChanged);
 			// 
 			// lblIC5
 			// 
+			this->lblIC5->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC5->Location = System::Drawing::Point(192, 128);
 			this->lblIC5->Name = L"lblIC5";
+			this->lblIC5->ReadOnly = true;
 			this->lblIC5->Size = System::Drawing::Size(64, 20);
 			this->lblIC5->TabIndex = 12;
 			this->lblIC5->TextChanged += gcnew System::EventHandler(this, &Form1::textBox5_TextChanged);
 			// 
 			// lblIC4
 			// 
+			this->lblIC4->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC4->Location = System::Drawing::Point(192, 102);
 			this->lblIC4->Name = L"lblIC4";
+			this->lblIC4->ReadOnly = true;
 			this->lblIC4->Size = System::Drawing::Size(64, 20);
 			this->lblIC4->TabIndex = 11;
 			// 
 			// lblIC3
 			// 
+			this->lblIC3->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC3->Location = System::Drawing::Point(192, 75);
 			this->lblIC3->Name = L"lblIC3";
+			this->lblIC3->ReadOnly = true;
 			this->lblIC3->Size = System::Drawing::Size(64, 20);
 			this->lblIC3->TabIndex = 10;
 			// 
 			// lblIC2
 			// 
+			this->lblIC2->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC2->Location = System::Drawing::Point(192, 46);
 			this->lblIC2->Name = L"lblIC2";
+			this->lblIC2->ReadOnly = true;
 			this->lblIC2->Size = System::Drawing::Size(64, 20);
 			this->lblIC2->TabIndex = 9;
 			// 
 			// lblIC1
 			// 
+			this->lblIC1->BackColor = System::Drawing::SystemColors::Window;
 			this->lblIC1->Location = System::Drawing::Point(192, 18);
 			this->lblIC1->Name = L"lblIC1";
+			this->lblIC1->ReadOnly = true;
 			this->lblIC1->Size = System::Drawing::Size(64, 20);
 			this->lblIC1->TabIndex = 8;
 			// 
@@ -865,9 +883,13 @@ private: System::Void label9_Click(System::Object^  sender, System::EventArgs^  
 private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 		 }
 private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-			// Freeze Buttons
-			//lblButStart->Enabled = false;
-			//lblButStop->Enabled = true;
+			// Initialization of the form
+			lblButStart->Enabled = true;
+			lblButLoad->Enabled = true;
+			lblSelectBox->Enabled = true;
+			lblButStop->Enabled = false;
+			lblCheckIC->Enabled = false;
+			
 			//lblButGenerateReport->Enabled = false;
 			
 		 }
@@ -936,12 +958,16 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 			int iTestNumber = lblSelectBox->SelectedIndex;
 			iTestNumber++;
 			
-			loadInitialConditions(iTestNumber);
+			
 			if (LoadFlightFileSimConnect(iTestNumber) != true)
 			{
 				MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
-			
+			else if(loadInitialConditions(iTestNumber) == true)
+			{
+				//Enable
+				lblCheckIC->Enabled = true;
+			}
 			SimConnect_Close(hSimConnect);
 					
 		 }
@@ -949,7 +975,7 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 	 
 		 
 
-private: void loadInitialConditions(int iTestNumber)
+private: bool loadInitialConditions(int iTestNumber)
 		 {
 			String^ str;
 			String^ sFileName = "Test Files/IC_TEST_" + Convert::ToString(iTestNumber) + ".txt" ;
@@ -986,8 +1012,10 @@ private: void loadInitialConditions(int iTestNumber)
 					lblIC8->Text = str;//8
 				
 					streamActualFile->Close();
-					//Change IC Beacons
-					//lblBeaconIC1->BackColor = System::Drawing::Color::Gold;
+					
+					return true;
+					
+					
 				}
 				else
 				{
@@ -1001,7 +1029,7 @@ private: void loadInitialConditions(int iTestNumber)
 					lblIC7->Text = "";
 					lblIC8->Text = "";
 					MessageBox::Show("Test file corrupted!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					
+					return false;
 					
 				}
 				
@@ -1018,7 +1046,7 @@ private: void loadInitialConditions(int iTestNumber)
 				lblIC7->Text = "";
 				lblIC8->Text = "";
 				MessageBox::Show("Test file not found!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-				
+				return false;
 			}
 				 
 		 }
@@ -1058,6 +1086,12 @@ private: void loadProject(String^ sFileName)
 			streamTestFile->Close();
 			sProjectFile = sFileName;
 
+			//Enable/Disable
+			lblButStart->Enabled = false;
+			lblButLoad->Enabled = true;
+			lblButStop->Enabled = false;
+			lblCheckIC->Enabled = false;
+
 		 }
 private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System::EventArgs^  e) {
 
@@ -1081,7 +1115,7 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		
 	
 
-		StreamWriter^ myfile = gcnew StreamWriter("DATA_TESTE_1.txt");
+		StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt");
 		myfile->Close();
 		
 		check = 3;
@@ -1098,33 +1132,45 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		 }
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
 
+			
+		}
+
+private: void Refresh_Simulator(int time){
+
 			HRESULT hr;
 			static enum EVENT_ID {
 				 EVENT_PAUSE,
 				 EVENT_UNPAUSE,
 			};
 
-			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Send Event A", NULL, 0, 0, 0)))
+			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Send Event PAUSE_UNPAUSE", NULL, 0, 0, 0)))
 			{
-				// 2. Setting an event value
+				// Set the UNPAUSE STATE
 				hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EVENT_UNPAUSE, "PAUSE_OFF");
-				// Set the selected DME to 2
 				SimConnect_TransmitClientEvent(hSimConnect, 0, EVENT_UNPAUSE, 0, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
-				Sleep(100);
-				// 2. Setting an event value
+				
+				Sleep(time);//Enough Time!
+				
+				// Set the PAUSE STATE again
 				hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EVENT_PAUSE, "PAUSE_ON");
-				// Set the selected DME to 2
 				SimConnect_TransmitClientEvent(hSimConnect, 0, EVENT_PAUSE, 0, SIMCONNECT_GROUP_PRIORITY_DEFAULT, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
 
 			}
 			else
 			{
-				lblDialogProjectName->Text = "Falhou";
+				MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
-		}
+
+
+
+
+		 }
 private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArgs^  e) {
 
-			
+		//Refresh Simulator 200ms (allow to load new inputs from user)
+		Refresh_Simulator(200);
+		
+			 
 		fCheckIC = 0;
 		if(Start_CHECK_IC() == false)
 		{
@@ -1180,10 +1226,11 @@ private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArg
 			lblBeaconIC8->BackColor = System::Drawing::Color::Red;
 
 
-		lblListBoxTests->Items->Add(Convert::ToString(InitialConditions[0]));
+		
 		lblDialogProjectName->Text = Convert::ToString(fCheckIC);
 		lblDialogProjectDate->Text = Convert::ToString(check); 
-	}	 
+	}
+
 		 
 };
 
