@@ -53,30 +53,30 @@ void CALLBACK GetData_CHECK_IC(SIMCONNECT_RECV* pData, DWORD cbData, void *pCont
 					
                     DWORD ObjectID = pObjData->dwObjectID;
                     Data_CHECK_IC *pS = (Data_CHECK_IC*)&pObjData->dwData;
-                    check = 10;
+                   
 					
 					
-					if( (pS->ThSetting) >= InitialConditions[0] *0.95 && (pS->ThSetting) <= InitialConditions[0]*1.05)
+					if( (pS->ThSetting) >= InitialConditions[0]-5 && (pS->ThSetting) <= InitialConditions[0]+5)//Scale: 0-100%
 						fCheckIC |= 0x01;
 					
-						
-					if((pS->MixSetting) >= InitialConditions[1]*0.95 && (pS->MixSetting) <= InitialConditions[1]*1.05)
+					
+					if((pS->MixSetting) >= InitialConditions[1]-5 && (pS->MixSetting) <= InitialConditions[1]+5)//Scale: 0-100%
 						fCheckIC |= 0x02;
 
-					if((pS->TrimSetting) >= InitialConditions[2]*0.95 && (pS->TrimSetting) <= InitialConditions[2]*1.05)
+					if((pS->TrimSetting) >= InitialConditions[2]*0.95 && (pS->TrimSetting) <= InitialConditions[2]*1.05)//Scale: -1(Full Down) 0(Full Up)
 						fCheckIC |= 0x04;
 
 					
-					if(pS->FlapIndicator == InitialConditions[4])
+					if(pS->FlapIndicator == InitialConditions[4])//Scale: 0-0Deg 1-10Deg 2-20Deg 3-30Deg
 						fCheckIC |= 0x08;
-
-					if((pS->PitchController) >= InitialConditions[5]*0.95 && (pS->PitchController) <= InitialConditions[5]*1.05)
+					
+					if((pS->PitchController) >= InitialConditions[5]-0.1 && (pS->PitchController) <= InitialConditions[5]+0.1)//Scale: 1(Full Up) -1(Full down)
 						fCheckIC |= 0x10;
-
-					if((pS->RollController) >= InitialConditions[6]*0.95 && (pS->RollController) <= InitialConditions[6]*1.05)
+					check = pS->PitchController;
+					if((pS->RollController) >= InitialConditions[6]-0.1 && (pS->RollController) <= InitialConditions[6]+0.1)//Scale: 1(Full Right) -1(Full Left)
 						fCheckIC |= 0x20;
 
-					if((pS->RudderController) >= InitialConditions[7]*0.95 && (pS->RudderController) <= InitialConditions[7]*1.05)
+					if((pS->RudderController) >= InitialConditions[7]-0.1 && (pS->RudderController) <= InitialConditions[7]+0.1)//Scale: 1(Full Right) -1(Full Left)
 						fCheckIC |= 0x40;
 					
 					bQuitTest = true;
@@ -139,7 +139,7 @@ bool Start_CHECK_IC ()
         {
 			hr = SimConnect_RequestDataOnSimObjectType(hSimConnect, DataRequest_CHECK_IC, DataDefinition_CHECK_IC, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
             SimConnect_CallDispatch(hSimConnect, GetData_CHECK_IC, NULL);
-            Sleep(200);//Time interbal between samples (cant be too large due to request)
+            Sleep(50);
         }
 
 		

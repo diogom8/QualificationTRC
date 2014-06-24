@@ -36,8 +36,8 @@ struct Data_TEST_1
 };
 
 static enum EVENT_ID{
-    EVENT_SIM_START,
-	EVENT_SIM_PAUSED,
+    EVENT_SIM_PAUSED,
+	EVENT_SIM_UNPAUSED,
 };
 
 static enum DATA_DEFINE_ID_TEST_1 {
@@ -52,13 +52,11 @@ static enum DATA_REQUEST_ID_TEST_1 {
 void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
     HRESULT hr;
-    //ofstream myfile;
+    
 	
-	//myfile.open ("DATA_TESTE_1.txt",ios::out | ios::app);
-	StreamWriter^ myfile = gcnew StreamWriter("DATA_TESTE_1.txt",true);
+	StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt",true);
 	
-
-
+	
 
     switch(pData->dwID)
     {
@@ -73,8 +71,13 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 					bQuitTest = true;
 					
 					break;
-
-                default:
+				case EVENT_SIM_UNPAUSED:
+					
+					bTestStarted = true;
+					
+					break;
+                
+				default:
                    break;
             }
             break;
@@ -89,29 +92,41 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
                 case DataRequest_TEST_1:
                 {
 					
-                    DWORD ObjectID = pObjData->dwObjectID;
-                    Data_TEST_1 *pS = (Data_TEST_1*)&pObjData->dwData;
-                    check = 4;
+                    //check = 3;
+					if(bTestStarted == true)//Start if simulator is unpaused
+					{
+						DWORD ObjectID = pObjData->dwObjectID;
+						Data_TEST_1 *pS = (Data_TEST_1*)&pObjData->dwData;
+						//check = 4;
 					
-					//Write reading data to file
-					myfile->Write(pS->Time+" ");
-					//myfile->Write(pS->ElevatorAngle+" ");
-					//myfile->Write(pS->EngineSpeed+" ");
-					//myfile->Write(pS->ExhaustGasTemperature+" ");
-					//myfile->Write(pS->FuelFlow+" ");
-					//myfile->Write(pS->IndicatedAirspeed+" ");
-					//myfile->Write(pS->PitchAngle+" ");
-					myfile->Write(pS->PitchControllerPosition+" ");
-					//myfile->Write(pS->IndicatedAltitude+" ");
-					//myfile->Write(pS->RateOfClimb+" ");
-					//myfile->Write(pS->RudderAngle+" ");
-					//myfile->Write(pS->ThrottleSetting+" ");
-					//myfile->Write(pS->Thrust);
-
-
-					myfile->Write("\n");
-
+						//Write reading data to file
+						pS->Time = pS->Time - dInitTime;
+						myfile->Write(pS->Time+" ");
 						
+						
+						//myfile->Write(pS->ElevatorAngle+" ");
+						//myfile->Write(pS->EngineSpeed+" ");
+						//myfile->Write(pS->ExhaustGasTemperature+" ");
+						//myfile->Write(pS->FuelFlow+" ");
+						myfile->Write(pS->IndicatedAirspeed+" ");
+						//myfile->Write(pS->PitchAngle+" ");
+						//myfile->Write(pS->PitchControllerPosition+" ");
+						myfile->Write(pS->IndicatedAltitude+" ");
+						//myfile->Write(pS->RateOfClimb+" ");
+						//myfile->Write(pS->RudderAngle+" ");
+						//myfile->Write(pS->ThrottleSetting+" ");
+						//myfile->Write(pS->Thrust);
+
+
+						myfile->Write("\n");
+					}
+					else
+					{
+						DWORD ObjectID = pObjData->dwObjectID;
+						Data_TEST_1 *pS = (Data_TEST_1*)&pObjData->dwData;
+						dInitTime = pS->Time;
+						
+					}
 						
 				
                     break;
@@ -132,7 +147,7 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
         }
 
         default:
-            //printf("\nReceived:%d",pData->dwID);
+           
             break;
     }
 
@@ -179,8 +194,9 @@ bool Start_TEST_1 ()
 
         // Request an event when the simulation pauses (end of test)
         hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_PAUSED, "Paused");
+		hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_UNPAUSED, "Unpaused");
 		
-		bQuitTest = false;
+		bQuitTest = false;bTestStarted = false;
         while( bQuitTest == false )
         {
 			hr = SimConnect_RequestDataOnSimObjectType(hSimConnect, DataRequest_TEST_1, DataDefinition_TEST_1, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
