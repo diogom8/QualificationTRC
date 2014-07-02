@@ -55,29 +55,29 @@ void CALLBACK GetData_CHECK_IC(SIMCONNECT_RECV* pData, DWORD cbData, void *pCont
                     Data_CHECK_IC *pS = (Data_CHECK_IC*)&pObjData->dwData;
                    
 					
-					
+					ActualInitialConditions[0] = pS->ThSetting;
 					if( (pS->ThSetting) >= InitialConditions[0]-5 && (pS->ThSetting) <= InitialConditions[0]+5)//Scale: 0-100%
 						fCheckIC |= 0x01;
-					
-					
+						
+					ActualInitialConditions[1] = pS->MixSetting;
 					if((pS->MixSetting) >= InitialConditions[1]-5 && (pS->MixSetting) <= InitialConditions[1]+5)//Scale: 0-100%
 						fCheckIC |= 0x02;
 
-					//if((pS->TrimSetting) >= InitialConditions[2]*0.95 && (pS->TrimSetting) <= InitialConditions[2]*1.05)//Scale: -1(Full Down) 0(Full Up)
+					ActualInitialConditions[2] = pS->FlapIndicator;					
+					if(pS->FlapIndicator == InitialConditions[2])//Scale: 0-0Deg 1-10Deg 2-20Deg 3-30Deg
 						fCheckIC |= 0x04;
-
 					
-					if(pS->FlapIndicator == InitialConditions[4])//Scale: 0-0Deg 1-10Deg 2-20Deg 3-30Deg
+					ActualInitialConditions[3] = pS->PitchController;	
+					if((pS->PitchController) >= InitialConditions[3]-0.1 && (pS->PitchController) <= InitialConditions[3]+0.1)//Scale: 1(Full Up) -1(Full down)
 						fCheckIC |= 0x08;
 					
-					if((pS->PitchController) >= InitialConditions[5]-0.1 && (pS->PitchController) <= InitialConditions[5]+0.1)//Scale: 1(Full Up) -1(Full down)
+					ActualInitialConditions[4] = pS->RollController;
+					if((pS->RollController) >= InitialConditions[4]-0.1 && (pS->RollController) <= InitialConditions[4]+0.1)//Scale: 1(Full Right) -1(Full Left)
 						fCheckIC |= 0x10;
-					check = pS->PitchController;
-					if((pS->RollController) >= InitialConditions[6]-0.1 && (pS->RollController) <= InitialConditions[6]+0.1)//Scale: 1(Full Right) -1(Full Left)
-						fCheckIC |= 0x20;
 
-					if((pS->RudderController) >= InitialConditions[7]-0.1 && (pS->RudderController) <= InitialConditions[7]+0.1)//Scale: 1(Full Right) -1(Full Left)
-						fCheckIC |= 0x40;
+					ActualInitialConditions[5] = pS->RudderController;
+					if((pS->RudderController) >= InitialConditions[5]-0.1 && (pS->RudderController) <= InitialConditions[5]+0.1)//Scale: 1(Full Right) -1(Full Left)
+						fCheckIC |= 0x20;
 					
 					bQuitTest = true;
 						

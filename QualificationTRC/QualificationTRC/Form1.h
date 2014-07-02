@@ -47,7 +47,9 @@ bool bTestStarted = false;
 double check = 0;
 double dInitTime;
 char fCheckIC = 0x00;
-double InitialConditions[8];
+
+double InitialConditions[6];
+double ActualInitialConditions[6];
 
 //bool Start_TEST_1(void);
 //Test Files
@@ -112,40 +114,48 @@ namespace QualificationTRC {
 	private: System::Windows::Forms::GroupBox^  groupBox1;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::TextBox^  lblIC8;
-
-	private: System::Windows::Forms::TextBox^  lblIC7;
-
 	private: System::Windows::Forms::TextBox^  lblIC6;
 
 	private: System::Windows::Forms::TextBox^  lblIC5;
 
+
 	private: System::Windows::Forms::TextBox^  lblIC4;
+
+
 	private: System::Windows::Forms::TextBox^  lblIC3;
+
+
+
+
+
 	private: System::Windows::Forms::TextBox^  lblIC2;
 	private: System::Windows::Forms::TextBox^  lblIC1;
 	private: System::Windows::Forms::Label^  label8;
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::Label^  label6;
 	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Label^  label4;
-	private: System::Windows::Forms::Label^  label3;
+
+
 	private: System::Windows::Forms::Label^  label9;
-	private: System::Windows::Forms::TextBox^  lblBeaconIC8;
-	private: System::Windows::Forms::TextBox^  lblBeaconIC7;
 	private: System::Windows::Forms::TextBox^  lblBeaconIC6;
+
 	private: System::Windows::Forms::TextBox^  lblBeaconIC5;
+
 	private: System::Windows::Forms::TextBox^  lblBeaconIC4;
+
 	private: System::Windows::Forms::TextBox^  lblBeaconIC3;
+
+
+
 	private: System::Windows::Forms::TextBox^  lblBeaconIC2;
 	private: System::Windows::Forms::TextBox^  lblBeaconIC1;
 	private: System::Windows::Forms::Label^  label16;
 	private: System::Windows::Forms::Label^  label15;
 	private: System::Windows::Forms::Label^  label14;
 	private: System::Windows::Forms::Label^  label13;
-	private: System::Windows::Forms::Label^  label12;
+
 	private: System::Windows::Forms::Label^  label11;
-	private: System::Windows::Forms::Label^  label10;
+
 	private: System::Windows::Forms::ProgressBar^  progressBar1;
 	private: System::Windows::Forms::Button^  lblButGenerateReport;
 
@@ -196,8 +206,6 @@ namespace QualificationTRC {
 			this->lblButReset = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->lblCheckIC = (gcnew System::Windows::Forms::Button());
-			this->lblBeaconIC8 = (gcnew System::Windows::Forms::TextBox());
-			this->lblBeaconIC7 = (gcnew System::Windows::Forms::TextBox());
 			this->lblBeaconIC6 = (gcnew System::Windows::Forms::TextBox());
 			this->lblBeaconIC5 = (gcnew System::Windows::Forms::TextBox());
 			this->lblBeaconIC4 = (gcnew System::Windows::Forms::TextBox());
@@ -208,12 +216,8 @@ namespace QualificationTRC {
 			this->label15 = (gcnew System::Windows::Forms::Label());
 			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->label13 = (gcnew System::Windows::Forms::Label());
-			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
-			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->lblIC8 = (gcnew System::Windows::Forms::TextBox());
-			this->lblIC7 = (gcnew System::Windows::Forms::TextBox());
 			this->lblIC6 = (gcnew System::Windows::Forms::TextBox());
 			this->lblIC5 = (gcnew System::Windows::Forms::TextBox());
 			this->lblIC4 = (gcnew System::Windows::Forms::TextBox());
@@ -224,8 +228,6 @@ namespace QualificationTRC {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
@@ -363,8 +365,6 @@ namespace QualificationTRC {
 			// groupBox1
 			// 
 			this->groupBox1->Controls->Add(this->lblCheckIC);
-			this->groupBox1->Controls->Add(this->lblBeaconIC8);
-			this->groupBox1->Controls->Add(this->lblBeaconIC7);
 			this->groupBox1->Controls->Add(this->lblBeaconIC6);
 			this->groupBox1->Controls->Add(this->lblBeaconIC5);
 			this->groupBox1->Controls->Add(this->lblBeaconIC4);
@@ -375,12 +375,8 @@ namespace QualificationTRC {
 			this->groupBox1->Controls->Add(this->label15);
 			this->groupBox1->Controls->Add(this->label14);
 			this->groupBox1->Controls->Add(this->label13);
-			this->groupBox1->Controls->Add(this->label12);
 			this->groupBox1->Controls->Add(this->label11);
-			this->groupBox1->Controls->Add(this->label10);
 			this->groupBox1->Controls->Add(this->label9);
-			this->groupBox1->Controls->Add(this->lblIC8);
-			this->groupBox1->Controls->Add(this->lblIC7);
 			this->groupBox1->Controls->Add(this->lblIC6);
 			this->groupBox1->Controls->Add(this->lblIC5);
 			this->groupBox1->Controls->Add(this->lblIC4);
@@ -391,8 +387,6 @@ namespace QualificationTRC {
 			this->groupBox1->Controls->Add(this->label7);
 			this->groupBox1->Controls->Add(this->label6);
 			this->groupBox1->Controls->Add(this->label5);
-			this->groupBox1->Controls->Add(this->label4);
-			this->groupBox1->Controls->Add(this->label3);
 			this->groupBox1->Controls->Add(this->label2);
 			this->groupBox1->Controls->Add(this->label1);
 			this->groupBox1->Location = System::Drawing::Point(266, 109);
@@ -404,7 +398,7 @@ namespace QualificationTRC {
 			// 
 			// lblCheckIC
 			// 
-			this->lblCheckIC->Location = System::Drawing::Point(187, 241);
+			this->lblCheckIC->Location = System::Drawing::Point(227, 246);
 			this->lblCheckIC->Name = L"lblCheckIC";
 			this->lblCheckIC->Size = System::Drawing::Size(75, 23);
 			this->lblCheckIC->TabIndex = 10;
@@ -412,68 +406,53 @@ namespace QualificationTRC {
 			this->lblCheckIC->UseVisualStyleBackColor = true;
 			this->lblCheckIC->Click += gcnew System::EventHandler(this, &Form1::lblCheckIC_Click);
 			// 
-			// lblBeaconIC8
-			// 
-			this->lblBeaconIC8->Location = System::Drawing::Point(176, 212);
-			this->lblBeaconIC8->Name = L"lblBeaconIC8";
-			this->lblBeaconIC8->ReadOnly = true;
-			this->lblBeaconIC8->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC8->TabIndex = 26;
-			// 
-			// lblBeaconIC7
-			// 
-			this->lblBeaconIC7->Location = System::Drawing::Point(176, 184);
-			this->lblBeaconIC7->Name = L"lblBeaconIC7";
-			this->lblBeaconIC7->ReadOnly = true;
-			this->lblBeaconIC7->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC7->TabIndex = 25;
-			// 
 			// lblBeaconIC6
 			// 
-			this->lblBeaconIC6->Location = System::Drawing::Point(176, 157);
+			this->lblBeaconIC6->Location = System::Drawing::Point(171, 200);
 			this->lblBeaconIC6->Name = L"lblBeaconIC6";
 			this->lblBeaconIC6->ReadOnly = true;
-			this->lblBeaconIC6->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC6->TabIndex = 24;
+			this->lblBeaconIC6->Size = System::Drawing::Size(39, 20);
+			this->lblBeaconIC6->TabIndex = 26;
 			// 
 			// lblBeaconIC5
 			// 
-			this->lblBeaconIC5->Location = System::Drawing::Point(176, 128);
+			this->lblBeaconIC5->Location = System::Drawing::Point(171, 166);
 			this->lblBeaconIC5->Name = L"lblBeaconIC5";
 			this->lblBeaconIC5->ReadOnly = true;
-			this->lblBeaconIC5->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC5->TabIndex = 23;
+			this->lblBeaconIC5->Size = System::Drawing::Size(39, 20);
+			this->lblBeaconIC5->TabIndex = 25;
 			// 
 			// lblBeaconIC4
 			// 
-			this->lblBeaconIC4->Location = System::Drawing::Point(176, 102);
+			this->lblBeaconIC4->Location = System::Drawing::Point(170, 132);
 			this->lblBeaconIC4->Name = L"lblBeaconIC4";
 			this->lblBeaconIC4->ReadOnly = true;
-			this->lblBeaconIC4->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC4->TabIndex = 22;
+			this->lblBeaconIC4->Size = System::Drawing::Size(40, 20);
+			this->lblBeaconIC4->TabIndex = 24;
 			// 
 			// lblBeaconIC3
 			// 
-			this->lblBeaconIC3->Location = System::Drawing::Point(176, 75);
+			this->lblBeaconIC3->Location = System::Drawing::Point(170, 92);
 			this->lblBeaconIC3->Name = L"lblBeaconIC3";
 			this->lblBeaconIC3->ReadOnly = true;
-			this->lblBeaconIC3->Size = System::Drawing::Size(15, 20);
-			this->lblBeaconIC3->TabIndex = 21;
+			this->lblBeaconIC3->Size = System::Drawing::Size(40, 20);
+			this->lblBeaconIC3->TabIndex = 23;
 			// 
 			// lblBeaconIC2
 			// 
-			this->lblBeaconIC2->Location = System::Drawing::Point(176, 46);
+			this->lblBeaconIC2->Location = System::Drawing::Point(170, 54);
 			this->lblBeaconIC2->Name = L"lblBeaconIC2";
 			this->lblBeaconIC2->ReadOnly = true;
-			this->lblBeaconIC2->Size = System::Drawing::Size(15, 20);
+			this->lblBeaconIC2->Size = System::Drawing::Size(40, 20);
 			this->lblBeaconIC2->TabIndex = 20;
 			// 
 			// lblBeaconIC1
 			// 
-			this->lblBeaconIC1->Location = System::Drawing::Point(176, 18);
+			this->lblBeaconIC1->Location = System::Drawing::Point(170, 18);
+			this->lblBeaconIC1->MaxLength = 3;
 			this->lblBeaconIC1->Name = L"lblBeaconIC1";
 			this->lblBeaconIC1->ReadOnly = true;
-			this->lblBeaconIC1->Size = System::Drawing::Size(15, 20);
+			this->lblBeaconIC1->Size = System::Drawing::Size(40, 20);
 			this->lblBeaconIC1->TabIndex = 19;
 			// 
 			// label16
@@ -481,7 +460,7 @@ namespace QualificationTRC {
 			this->label16->AutoSize = true;
 			this->label16->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label16->Location = System::Drawing::Point(266, 128);
+			this->label16->Location = System::Drawing::Point(262, 94);
 			this->label16->Name = L"label16";
 			this->label16->Size = System::Drawing::Size(22, 14);
 			this->label16->TabIndex = 18;
@@ -493,7 +472,7 @@ namespace QualificationTRC {
 			this->label15->AutoSize = true;
 			this->label15->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label15->Location = System::Drawing::Point(262, 209);
+			this->label15->Location = System::Drawing::Point(262, 202);
 			this->label15->Name = L"label15";
 			this->label15->Size = System::Drawing::Size(31, 14);
 			this->label15->TabIndex = 17;
@@ -504,7 +483,7 @@ namespace QualificationTRC {
 			this->label14->AutoSize = true;
 			this->label14->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label14->Location = System::Drawing::Point(262, 182);
+			this->label14->Location = System::Drawing::Point(262, 168);
 			this->label14->Name = L"label14";
 			this->label14->Size = System::Drawing::Size(31, 14);
 			this->label14->TabIndex = 17;
@@ -515,44 +494,22 @@ namespace QualificationTRC {
 			this->label13->AutoSize = true;
 			this->label13->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label13->Location = System::Drawing::Point(262, 155);
+			this->label13->Location = System::Drawing::Point(262, 132);
 			this->label13->Name = L"label13";
 			this->label13->Size = System::Drawing::Size(31, 14);
 			this->label13->TabIndex = 17;
 			this->label13->Text = L"(%)";
-			// 
-			// label12
-			// 
-			this->label12->AutoSize = true;
-			this->label12->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->label12->Location = System::Drawing::Point(266, 74);
-			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(22, 14);
-			this->label12->TabIndex = 17;
-			this->label12->Text = L"(-)";
 			// 
 			// label11
 			// 
 			this->label11->AutoSize = true;
 			this->label11->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label11->Location = System::Drawing::Point(262, 47);
+			this->label11->Location = System::Drawing::Point(262, 55);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(31, 14);
 			this->label11->TabIndex = 17;
 			this->label11->Text = L"(%)";
-			// 
-			// label10
-			// 
-			this->label10->AutoSize = true;
-			this->label10->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->label10->Location = System::Drawing::Point(257, 101);
-			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(40, 14);
-			this->label10->TabIndex = 17;
-			this->label10->Text = L"(deg)";
 			// 
 			// label9
 			// 
@@ -566,85 +523,65 @@ namespace QualificationTRC {
 			this->label9->Text = L"(%)";
 			this->label9->Click += gcnew System::EventHandler(this, &Form1::label9_Click);
 			// 
-			// lblIC8
-			// 
-			this->lblIC8->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC8->Location = System::Drawing::Point(192, 212);
-			this->lblIC8->Name = L"lblIC8";
-			this->lblIC8->ReadOnly = true;
-			this->lblIC8->Size = System::Drawing::Size(64, 20);
-			this->lblIC8->TabIndex = 15;
-			this->lblIC8->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// lblIC7
-			// 
-			this->lblIC7->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC7->Location = System::Drawing::Point(192, 184);
-			this->lblIC7->Name = L"lblIC7";
-			this->lblIC7->ReadOnly = true;
-			this->lblIC7->Size = System::Drawing::Size(64, 20);
-			this->lblIC7->TabIndex = 14;
-			this->lblIC7->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
 			// lblIC6
 			// 
 			this->lblIC6->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC6->Location = System::Drawing::Point(192, 157);
+			this->lblIC6->Location = System::Drawing::Point(216, 200);
 			this->lblIC6->Name = L"lblIC6";
 			this->lblIC6->ReadOnly = true;
-			this->lblIC6->Size = System::Drawing::Size(64, 20);
-			this->lblIC6->TabIndex = 13;
+			this->lblIC6->Size = System::Drawing::Size(40, 20);
+			this->lblIC6->TabIndex = 15;
 			this->lblIC6->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			this->lblIC6->TextChanged += gcnew System::EventHandler(this, &Form1::textBox6_TextChanged);
 			// 
 			// lblIC5
 			// 
 			this->lblIC5->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC5->Location = System::Drawing::Point(192, 128);
+			this->lblIC5->Location = System::Drawing::Point(216, 166);
 			this->lblIC5->Name = L"lblIC5";
 			this->lblIC5->ReadOnly = true;
-			this->lblIC5->Size = System::Drawing::Size(64, 20);
-			this->lblIC5->TabIndex = 12;
+			this->lblIC5->Size = System::Drawing::Size(40, 20);
+			this->lblIC5->TabIndex = 14;
 			this->lblIC5->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			this->lblIC5->TextChanged += gcnew System::EventHandler(this, &Form1::textBox5_TextChanged);
 			// 
 			// lblIC4
 			// 
 			this->lblIC4->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC4->Location = System::Drawing::Point(192, 102);
+			this->lblIC4->Location = System::Drawing::Point(216, 132);
 			this->lblIC4->Name = L"lblIC4";
 			this->lblIC4->ReadOnly = true;
-			this->lblIC4->Size = System::Drawing::Size(64, 20);
-			this->lblIC4->TabIndex = 11;
+			this->lblIC4->Size = System::Drawing::Size(40, 20);
+			this->lblIC4->TabIndex = 13;
 			this->lblIC4->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->lblIC4->TextChanged += gcnew System::EventHandler(this, &Form1::textBox6_TextChanged);
 			// 
 			// lblIC3
 			// 
 			this->lblIC3->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC3->Location = System::Drawing::Point(192, 75);
+			this->lblIC3->Location = System::Drawing::Point(216, 92);
 			this->lblIC3->Name = L"lblIC3";
 			this->lblIC3->ReadOnly = true;
-			this->lblIC3->Size = System::Drawing::Size(64, 20);
-			this->lblIC3->TabIndex = 10;
+			this->lblIC3->Size = System::Drawing::Size(40, 20);
+			this->lblIC3->TabIndex = 12;
 			this->lblIC3->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->lblIC3->TextChanged += gcnew System::EventHandler(this, &Form1::textBox5_TextChanged);
 			// 
 			// lblIC2
 			// 
 			this->lblIC2->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC2->Location = System::Drawing::Point(192, 46);
+			this->lblIC2->Location = System::Drawing::Point(216, 54);
 			this->lblIC2->Name = L"lblIC2";
 			this->lblIC2->ReadOnly = true;
-			this->lblIC2->Size = System::Drawing::Size(64, 20);
+			this->lblIC2->Size = System::Drawing::Size(40, 20);
 			this->lblIC2->TabIndex = 9;
 			this->lblIC2->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC1
 			// 
 			this->lblIC1->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC1->Location = System::Drawing::Point(192, 18);
+			this->lblIC1->Location = System::Drawing::Point(216, 18);
 			this->lblIC1->Name = L"lblIC1";
 			this->lblIC1->ReadOnly = true;
-			this->lblIC1->Size = System::Drawing::Size(64, 20);
+			this->lblIC1->Size = System::Drawing::Size(40, 20);
 			this->lblIC1->TabIndex = 8;
 			this->lblIC1->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -653,7 +590,7 @@ namespace QualificationTRC {
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label8->Location = System::Drawing::Point(6, 214);
+			this->label8->Location = System::Drawing::Point(7, 206);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(135, 14);
 			this->label8->TabIndex = 7;
@@ -664,7 +601,7 @@ namespace QualificationTRC {
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label7->Location = System::Drawing::Point(6, 186);
+			this->label7->Location = System::Drawing::Point(7, 168);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(149, 14);
 			this->label7->TabIndex = 6;
@@ -675,7 +612,7 @@ namespace QualificationTRC {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(6, 159);
+			this->label6->Location = System::Drawing::Point(7, 132);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(157, 14);
 			this->label6->TabIndex = 5;
@@ -686,40 +623,18 @@ namespace QualificationTRC {
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(6, 130);
+			this->label5->Location = System::Drawing::Point(7, 92);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(145, 14);
 			this->label5->TabIndex = 4;
 			this->label5->Text = L"Flap Indicator Position";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(7, 104);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(122, 14);
-			this->label4->TabIndex = 3;
-			this->label4->Text = L"Flap Lever Position";
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(6, 77);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(123, 14);
-			this->label3->TabIndex = 2;
-			this->label3->Text = L"Trimwheel Position";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(7, 48);
+			this->label2->Location = System::Drawing::Point(7, 56);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(104, 14);
 			this->label2->TabIndex = 1;
@@ -1038,7 +953,7 @@ private: bool loadInitialConditions(int iTestNumber)
 					iLineCount++;
 				}
 				streamActualFile->Close();
-				if ( iLineCount == 8)
+				if ( iLineCount == 6)
 				{
 					//Read test Initial Conditions(IC)
 					StreamReader^ streamActualFile = File::OpenText(sFileName);
@@ -1055,10 +970,7 @@ private: bool loadInitialConditions(int iTestNumber)
 					lblIC5->Text = str;//5
 					str = streamActualFile->ReadLine(); InitialConditions[5] = Convert::ToDouble(str);
 					lblIC6->Text = str;//6
-					str = streamActualFile->ReadLine(); InitialConditions[6] = Convert::ToDouble(str);
-					lblIC7->Text = str;//7
-					str = streamActualFile->ReadLine(); InitialConditions[7] = Convert::ToDouble(str);
-					lblIC8->Text = str;//8
+					
 				
 					streamActualFile->Close();
 					
@@ -1075,8 +987,6 @@ private: bool loadInitialConditions(int iTestNumber)
 					lblIC4->Text = "";
 					lblIC5->Text = "";
 					lblIC6->Text = "";
-					lblIC7->Text = "";
-					lblIC8->Text = "";
 					MessageBox::Show("Test file corrupted!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 					return false;
 					
@@ -1092,8 +1002,6 @@ private: bool loadInitialConditions(int iTestNumber)
 				lblIC4->Text = "";
 				lblIC5->Text = "";
 				lblIC6->Text = "";
-				lblIC7->Text = "";
-				lblIC8->Text = "";
 				MessageBox::Show("Test file not found!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				return false;
 			}
@@ -1198,9 +1106,11 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
 
 			
-			FILE *pipe = _popen("pgnuplot -persist", "w");
+			//GNUPLOT PIPING
+			/*FILE *pipe = _popen(GNUPLOT_NAME, "w");
 			fprintf(pipe, "set term wxt\n");
-			fprintf(pipe, "plot sin(x)\n");
+			fprintf(pipe, "cd 'C:\\Users\\Diogo & Suhas\\Documents\\QualificationTRC\\QualificationTRC\\QualificationTRC\\Plots'\n");
+			fprintf(pipe, "load 'GNUPLOT_TEST_1.gp'\n");
 
 
 			if (pipe != NULL)
@@ -1211,8 +1121,25 @@ private: System::Void lblButGenerateReport_Click(System::Object^  sender, System
 				lblDialogProjectDate->Text="Não deu";
 		
 		 
-		 _pclose(pipe);
-		 
+			_pclose(pipe);*/
+			
+			 
+			 //USEFUL STUFF TO TOGGLE JOYSTICK
+			 /* static enum INPUT_ID {
+				INPUT_1,
+			};
+			static enum EVENT_ID {
+				 EVENT_JOYSTICK,
+			};
+
+			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Send Event JOYSTICK", NULL, 0, 0, 0)))
+			{
+				// Toggle Joystick
+				SimConnect_MapClientEventToSimEvent(hSimConnect, EVENT_JOYSTICK, "joystick_calibrate");
+				SimConnect_TransmitClientEvent(hSimConnect, 0, EVENT_JOYSTICK, 0, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+				//SimConnect_MapInputEventToClientEvent(hSimConnect, INPUT_1, "joystick:0:XAxis", EVENT_JOYSTICK);	
+				//SimConnect_SetInputGroupState(hSimConnect,INPUT_1,  SIMCONNECT_STATE_OFF);
+			}*/
 		 }
 
 private: void Refresh_Simulator(int time){
@@ -1248,7 +1175,7 @@ private: void Refresh_Simulator(int time){
 private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArgs^  e) {
 
 		//Refresh Simulator 200ms (allow to load new inputs from user)
-		Refresh_Simulator(200);
+		Refresh_Simulator(100);
 		
 			 
 		fCheckIC = 0;
@@ -1263,50 +1190,51 @@ private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArg
 		else
 			lblBeaconIC1->BackColor = System::Drawing::Color::Red;
 
+		lblBeaconIC1->Text = Convert::ToString(ActualInitialConditions[0]);
+		
 		//Mixture
 		if((fCheckIC & 0x02) != 0)
 			lblBeaconIC2->BackColor = System::Drawing::Color::Green;
 		else
 			lblBeaconIC2->BackColor = System::Drawing::Color::Red;
 
-		//Trim
+		lblBeaconIC2->Text = Convert::ToString(ActualInitialConditions[1]);
+		
+		//Flaps
 		if((fCheckIC & 0x04) != 0)
 			lblBeaconIC3->BackColor = System::Drawing::Color::Green;
 		else
 			lblBeaconIC3->BackColor = System::Drawing::Color::Red;
+		
+		lblBeaconIC3->Text = Convert::ToString(ActualInitialConditions[2]);
+		
 
-		//Flaps
-		if((fCheckIC & 0x08) != 0)
-		{
-			lblBeaconIC4->BackColor = System::Drawing::Color::Green;
-			lblBeaconIC5->BackColor = System::Drawing::Color::Green;
-		}
-		else
-		{
-			lblBeaconIC4->BackColor = System::Drawing::Color::Red;
-			lblBeaconIC5->BackColor = System::Drawing::Color::Red;
-		}
-			
 		//Pitch Controller
+		if((fCheckIC & 0x08) != 0)
+			lblBeaconIC4->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC4->BackColor = System::Drawing::Color::Red;
+
+		lblBeaconIC4->Text = Convert::ToString(ActualInitialConditions[3]);
+		
+		//Roll Controller
 		if((fCheckIC & 0x10) != 0)
+			lblBeaconIC5->BackColor = System::Drawing::Color::Green;
+		else
+			lblBeaconIC5->BackColor = System::Drawing::Color::Red;
+
+		lblBeaconIC5->Text = Convert::ToString(ActualInitialConditions[4]);
+
+		//Rudder Controller
+		if((fCheckIC & 0x20) != 0)
 			lblBeaconIC6->BackColor = System::Drawing::Color::Green;
 		else
 			lblBeaconIC6->BackColor = System::Drawing::Color::Red;
 
-		//Roll Controller
-		if((fCheckIC & 0x20) != 0)
-			lblBeaconIC7->BackColor = System::Drawing::Color::Green;
-		else
-			lblBeaconIC7->BackColor = System::Drawing::Color::Red;
-
-		//Rudder Controller
-		if((fCheckIC & 0x40) != 0)
-			lblBeaconIC8->BackColor = System::Drawing::Color::Green;
-		else
-			lblBeaconIC8->BackColor = System::Drawing::Color::Red;
+		lblBeaconIC6->Text = Convert::ToString(ActualInitialConditions[5]);
 
 
-		if((fCheckIC & 0xFF) == 0x7F)//All Initial Conditions are right
+		if((fCheckIC & 0xFF) == 0x3F)//All Initial Conditions are right
 		{
 			//Enable Start
 			lblButStart->Enabled = true;
