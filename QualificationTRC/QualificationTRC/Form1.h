@@ -1121,7 +1121,7 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		check = 3;
 		if(Start_TEST_1() == false)
 		{
-			 lblDialogProjectDate->Text="\nFaile to connect to Prepar3D!";
+			 lblDialogProjectDate->Text="\nFailed to connect to Prepar3D!";
 		}
 
 		lblDialogProjectDate->Text = Convert::ToString(check);

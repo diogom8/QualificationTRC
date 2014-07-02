@@ -14,7 +14,7 @@
 //	Note: In order to adapt to other test start by replacing TEST_1 to TEST_*
 //------------------------------------------------------------------------------
 
-struct Data_TEST_1
+struct Data_TEST_1 //output data for test 1
 {
 	double Time;
     double ElevatorAngle;
