@@ -63,7 +63,7 @@ void CALLBACK GetData_CHECK_IC(SIMCONNECT_RECV* pData, DWORD cbData, void *pCont
 					if((pS->MixSetting) >= InitialConditions[1]-5 && (pS->MixSetting) <= InitialConditions[1]+5)//Scale: 0-100%
 						fCheckIC |= 0x02;
 
-					if((pS->TrimSetting) >= InitialConditions[2]*0.95 && (pS->TrimSetting) <= InitialConditions[2]*1.05)//Scale: -1(Full Down) 0(Full Up)
+					//if((pS->TrimSetting) >= InitialConditions[2]*0.95 && (pS->TrimSetting) <= InitialConditions[2]*1.05)//Scale: -1(Full Down) 0(Full Up)
 						fCheckIC |= 0x04;
 
 					

@@ -8,6 +8,17 @@
 #include <msclr\marshal_cppstd.h> //To convert System String to std::string
 #include <string>
 //#include "chplot.h" - 30 day free trial library(c:silib:include)
+#include <sstream>
+
+
+#define GNUPLOT_NAME "pgnuplot -persist"
+
+
+
+//MACRO TO CONVERT INT TO STRING
+#define intTOstr( x ) dynamic_cast< std::ostringstream & >( \
+        ( std::ostringstream() << std::dec << x ) ).str()
+
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -40,9 +51,9 @@ double InitialConditions[8];
 
 //bool Start_TEST_1(void);
 //Test Files
-#include "Test Files/TEST_SIMCONNECT_LIST.h"
-#include "Test Files/TEST_1.h"
-#include "Test Files/TEST_IC.h"
+#include "TestFiles/TEST_LOAD.h"
+#include "TestFiles/TEST_START.h"
+#include "InitialConditions/TEST_IC.h"
 
 
 
@@ -96,7 +107,8 @@ namespace QualificationTRC {
 	private: System::Windows::Forms::ComboBox^  lblSelectBox;
 	private: System::Windows::Forms::Button^  lblButLoad;
 	private: System::Windows::Forms::Button^  lblButStart;
-	private: System::Windows::Forms::Button^  lblButStop;
+	private: System::Windows::Forms::Button^  lblButReset;
+
 	private: System::Windows::Forms::GroupBox^  groupBox1;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
@@ -181,7 +193,7 @@ namespace QualificationTRC {
 			this->lblSelectBox = (gcnew System::Windows::Forms::ComboBox());
 			this->lblButLoad = (gcnew System::Windows::Forms::Button());
 			this->lblButStart = (gcnew System::Windows::Forms::Button());
-			this->lblButStop = (gcnew System::Windows::Forms::Button());
+			this->lblButReset = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->lblCheckIC = (gcnew System::Windows::Forms::Button());
 			this->lblBeaconIC8 = (gcnew System::Windows::Forms::TextBox());
@@ -332,21 +344,21 @@ namespace QualificationTRC {
 			this->lblButStart->UseVisualStyleBackColor = true;
 			this->lblButStart->Click += gcnew System::EventHandler(this, &Form1::lblButStart_Click);
 			// 
-			// lblButStop
+			// lblButReset
 			// 
-			this->lblButStop->BackColor = System::Drawing::SystemColors::Control;
-			this->lblButStop->FlatAppearance->BorderColor = System::Drawing::Color::White;
-			this->lblButStop->FlatAppearance->MouseDownBackColor = System::Drawing::Color::White;
-			this->lblButStop->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->lblButReset->BackColor = System::Drawing::SystemColors::Control;
+			this->lblButReset->FlatAppearance->BorderColor = System::Drawing::Color::White;
+			this->lblButReset->FlatAppearance->MouseDownBackColor = System::Drawing::Color::White;
+			this->lblButReset->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->lblButStop->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->lblButStop->Location = System::Drawing::Point(499, 80);
-			this->lblButStop->Name = L"lblButStop";
-			this->lblButStop->Size = System::Drawing::Size(75, 23);
-			this->lblButStop->TabIndex = 4;
-			this->lblButStop->Text = L"Stop";
-			this->lblButStop->UseVisualStyleBackColor = true;
-			this->lblButStop->Click += gcnew System::EventHandler(this, &Form1::lblButStop_Click);
+			this->lblButReset->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->lblButReset->Location = System::Drawing::Point(499, 80);
+			this->lblButReset->Name = L"lblButReset";
+			this->lblButReset->Size = System::Drawing::Size(75, 23);
+			this->lblButReset->TabIndex = 4;
+			this->lblButReset->Text = L"Reset";
+			this->lblButReset->UseVisualStyleBackColor = true;
+			this->lblButReset->Click += gcnew System::EventHandler(this, &Form1::lblButReset_Click);
 			// 
 			// groupBox1
 			// 
@@ -469,11 +481,12 @@ namespace QualificationTRC {
 			this->label16->AutoSize = true;
 			this->label16->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label16->Location = System::Drawing::Point(257, 128);
+			this->label16->Location = System::Drawing::Point(266, 128);
 			this->label16->Name = L"label16";
-			this->label16->Size = System::Drawing::Size(40, 14);
+			this->label16->Size = System::Drawing::Size(22, 14);
 			this->label16->TabIndex = 18;
-			this->label16->Text = L"(deg)";
+			this->label16->Text = L"(-)";
+			this->label16->Click += gcnew System::EventHandler(this, &Form1::label16_Click);
 			// 
 			// label15
 			// 
@@ -556,12 +569,12 @@ namespace QualificationTRC {
 			// lblIC8
 			// 
 			this->lblIC8->BackColor = System::Drawing::SystemColors::Window;
-			this->lblIC8->Enabled = false;
 			this->lblIC8->Location = System::Drawing::Point(192, 212);
 			this->lblIC8->Name = L"lblIC8";
 			this->lblIC8->ReadOnly = true;
 			this->lblIC8->Size = System::Drawing::Size(64, 20);
 			this->lblIC8->TabIndex = 15;
+			this->lblIC8->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC7
 			// 
@@ -571,6 +584,7 @@ namespace QualificationTRC {
 			this->lblIC7->ReadOnly = true;
 			this->lblIC7->Size = System::Drawing::Size(64, 20);
 			this->lblIC7->TabIndex = 14;
+			this->lblIC7->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC6
 			// 
@@ -580,6 +594,7 @@ namespace QualificationTRC {
 			this->lblIC6->ReadOnly = true;
 			this->lblIC6->Size = System::Drawing::Size(64, 20);
 			this->lblIC6->TabIndex = 13;
+			this->lblIC6->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->lblIC6->TextChanged += gcnew System::EventHandler(this, &Form1::textBox6_TextChanged);
 			// 
 			// lblIC5
@@ -590,6 +605,7 @@ namespace QualificationTRC {
 			this->lblIC5->ReadOnly = true;
 			this->lblIC5->Size = System::Drawing::Size(64, 20);
 			this->lblIC5->TabIndex = 12;
+			this->lblIC5->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->lblIC5->TextChanged += gcnew System::EventHandler(this, &Form1::textBox5_TextChanged);
 			// 
 			// lblIC4
@@ -600,6 +616,7 @@ namespace QualificationTRC {
 			this->lblIC4->ReadOnly = true;
 			this->lblIC4->Size = System::Drawing::Size(64, 20);
 			this->lblIC4->TabIndex = 11;
+			this->lblIC4->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC3
 			// 
@@ -609,6 +626,7 @@ namespace QualificationTRC {
 			this->lblIC3->ReadOnly = true;
 			this->lblIC3->Size = System::Drawing::Size(64, 20);
 			this->lblIC3->TabIndex = 10;
+			this->lblIC3->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC2
 			// 
@@ -618,6 +636,7 @@ namespace QualificationTRC {
 			this->lblIC2->ReadOnly = true;
 			this->lblIC2->Size = System::Drawing::Size(64, 20);
 			this->lblIC2->TabIndex = 9;
+			this->lblIC2->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// lblIC1
 			// 
@@ -627,6 +646,7 @@ namespace QualificationTRC {
 			this->lblIC1->ReadOnly = true;
 			this->lblIC1->Size = System::Drawing::Size(64, 20);
 			this->lblIC1->TabIndex = 8;
+			this->lblIC1->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// label8
 			// 
@@ -845,7 +865,7 @@ namespace QualificationTRC {
 			this->Controls->Add(this->lblButGenerateReport);
 			this->Controls->Add(this->progressBar1);
 			this->Controls->Add(this->groupBox1);
-			this->Controls->Add(this->lblButStop);
+			this->Controls->Add(this->lblButReset);
 			this->Controls->Add(this->lblButStart);
 			this->Controls->Add(this->lblButLoad);
 			this->Controls->Add(this->lblSelectBox);
@@ -884,13 +904,13 @@ private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::
 		 }
 private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
 			// Initialization of the form
-			lblButStart->Enabled = true;
-			lblButLoad->Enabled = true;
-			lblSelectBox->Enabled = true;
-			lblButStop->Enabled = false;
+			lblButStart->Enabled = false;
+			lblButLoad->Enabled = false;
+			lblSelectBox->Enabled = false;
+			lblButReset->Enabled = false;
 			lblCheckIC->Enabled = false;
 			
-			//lblButGenerateReport->Enabled = false;
+			lblButGenerateReport->Enabled = true;
 			
 		 }
 private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -905,6 +925,22 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 			
 
 			String^ sfileName = saveFileDialog1->FileName;
+
+			/* CREATE DIRECTORY
+			msclr::interop::marshal_context context;
+			std::string str_aux = context.marshal_as<std::string>(sfileName);
+
+			string key = "\\";
+			unsigned found = str_aux.find_first_of(key);
+			while(found != std::string::npos)
+			{
+				str_aux.replace (found,key.length(),"\\\\");
+				found = str_aux.find_first_of("\\",found+2);
+				
+			}
+			
+			CreateDirectory((LPCTSTR)str_aux.c_str(), NULL);*/
+
 			if(saveFileDialog1->FileName != "")
 			{
 				
@@ -913,7 +949,7 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 				NewProjFile->WriteLine(DateTime::Now);//Date of Creation
 				
 				//List of Tests to Perform
-				StreamReader^ sFile = File::OpenText("Test Files\\TestsToPerform.txt");
+				StreamReader^ sFile = File::OpenText("TestFiles\\TestsToPerform.txt");
 				String^ str;
 				
 				while ((str = sFile->ReadLine()) != nullptr) 
@@ -938,7 +974,8 @@ private: System::Void lblDialog_TextChanged(System::Object^  sender, System::Eve
 
 private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventArgs^  e) {
 			
-			 
+			
+			
 			//OpenFileDialog
 			OpenFileDialog ^ openFileDialog1 = gcnew OpenFileDialog();
 			openFileDialog1->Filter = "Project File|*.proj";
@@ -958,18 +995,30 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 			int iTestNumber = lblSelectBox->SelectedIndex;
 			iTestNumber++;
 			
+			if (SUCCEEDED(SimConnect_Open(&hSimConnect, "Open and Close", NULL, 0, 0, 0)))
+			{
+				if (LoadFlightFileSimConnect(iTestNumber) != true)
+				{
+					MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				}
+				else 
+				{
+					if (loadInitialConditions(iTestNumber) == true)
+					{
+						//Enable
+						lblCheckIC->Enabled = true;
+						lblButLoad->Enabled = false;
+						lblSelectBox->Enabled = false;
 			
-			if (LoadFlightFileSimConnect(iTestNumber) != true)
-			{
-				MessageBox::Show("Cannot load simulation test file!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					}
+				}
 			}
-			else if(loadInitialConditions(iTestNumber) == true)
-			{
-				//Enable
-				lblCheckIC->Enabled = true;
-			}
-			SimConnect_Close(hSimConnect);
+			else
+				MessageBox::Show("Failed to connect to Prepar3D! Check if simulator is running	.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 					
+		 
+			SimConnect_Close(hSimConnect);
+		 
 		 }
  
 	 
@@ -978,7 +1027,7 @@ private: System::Void lblButLoad_Click(System::Object^  sender, System::EventArg
 private: bool loadInitialConditions(int iTestNumber)
 		 {
 			String^ str;
-			String^ sFileName = "Test Files/IC_TEST_" + Convert::ToString(iTestNumber) + ".txt" ;
+			String^ sFileName = "InitialConditions/IC_TEST_" + Convert::ToString(iTestNumber) + ".txt" ;
 			if (File::Exists(sFileName) == true)
 			{
 				//Check if file is not corrupted (erroneous number of lines)
@@ -1067,8 +1116,8 @@ private: void loadProject(String^ sFileName)
 			//Manipulate to get project name out of directory
 			msclr::interop::marshal_context context;
 			std::string str_aux = context.marshal_as<std::string>(str);
-			int i = str_aux.rfind("\\");
-			str_aux=str_aux.erase (0,31);
+			int i = str_aux.find_last_of("\\");
+			str_aux=str_aux.erase (0,i+1);
 			lblDialogProjectName->Text = gcnew String(str_aux.c_str());
 
 						
@@ -1089,15 +1138,22 @@ private: void loadProject(String^ sFileName)
 			//Enable/Disable
 			lblButStart->Enabled = false;
 			lblButLoad->Enabled = true;
-			lblButStop->Enabled = false;
 			lblCheckIC->Enabled = false;
+			lblSelectBox->Enabled = true;
+			lblButReset->Enabled = true;
 
 		 }
 private: System::Void checkBox1_CheckedChanged_1(System::Object^  sender, System::EventArgs^  e) {
 
 		 }
-private: System::Void lblButStop_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void lblButReset_Click(System::Object^  sender, System::EventArgs^  e) {
 	
+		lblButStart->Enabled = false;
+		lblButLoad->Enabled = true;
+		lblSelectBox->Enabled = true;
+		lblCheckIC->Enabled = false;
+			 
+			 
 		//If some error arises try including line HRESULT hr; and hr = SimConnect_Close(hSimConnect);
 
 		
@@ -1113,9 +1169,10 @@ private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Wi
 		 }
 private: System::Void lblButStart_Click(System::Object^  sender, System::EventArgs^  e) {
 		
-	
+		int iTestNumber = lblSelectBox->SelectedIndex;
+		iTestNumber++;
 
-		StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt");
+		/*StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt");
 		myfile->Close();
 		
 		check = 3;
@@ -1124,16 +1181,39 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 			 lblDialogProjectDate->Text="\nFailed to connect to Prepar3D!";
 		}
 
-		lblDialogProjectDate->Text = Convert::ToString(check);
+		lblDialogProjectDate->Text = Convert::ToString(check);*/
+
+		
+		if(StartTestSimConnect(iTestNumber) == false)
+		{
+			 MessageBox::Show("Failed to connect to Prepar3D! Check if simulator is running	.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+		}
+
+		
 		 
 		 
 		 
 		 
-		 }
+	}
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
 
 			
-		}
+			FILE *pipe = _popen("pgnuplot -persist", "w");
+			fprintf(pipe, "set term wxt\n");
+			fprintf(pipe, "plot sin(x)\n");
+
+
+			if (pipe != NULL)
+			{
+				lblDialogProjectDate->Text="Conseguiu";
+			}
+			else
+				lblDialogProjectDate->Text="Não deu";
+		
+		 
+		 _pclose(pipe);
+		 
+		 }
 
 private: void Refresh_Simulator(int time){
 
@@ -1226,12 +1306,26 @@ private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArg
 			lblBeaconIC8->BackColor = System::Drawing::Color::Red;
 
 
-		
-		lblDialogProjectName->Text = Convert::ToString(fCheckIC);
-		lblDialogProjectDate->Text = Convert::ToString(check); 
+		if((fCheckIC & 0xFF) == 0x7F)//All Initial Conditions are right
+		{
+			//Enable Start
+			lblButStart->Enabled = true;
+			lblCheckIC->Enabled = false;
+
+		}
+		else
+		{
+			//Disable Start
+			lblButStart->Enabled = false;
+			lblCheckIC->Enabled = true;
+		}
+	
+		 
 	}
 
 		 
+private: System::Void label16_Click(System::Object^  sender, System::EventArgs^  e) {
+		 }
 };
 
 

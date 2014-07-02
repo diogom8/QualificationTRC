@@ -54,7 +54,7 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
     HRESULT hr;
     
 	
-	StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt",true);
+	StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_NEW_1.txt",true);
 	
 	
 
@@ -157,19 +157,10 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 }
 
 
-bool Start_TEST_1 ()
+void START_TEST_1 ()
 {
 	HRESULT hr;
-	bool ret = false;
 	
-	
-
-
-
-	ret = SUCCEEDED(SimConnect_Open(&hSimConnect, "Request Data", NULL, 0, 0, 0));
-	
-    if (ret == true)
-    {
         
 		
         
@@ -205,14 +196,14 @@ bool Start_TEST_1 ()
         } 
 		
         		
-		hr = SimConnect_Close(hSimConnect);// Close Server Connection
+		
 		
 		
 		/* Proceed with Test Analysis*/
 		//UNDER DEVELOPMENT
-    }
+    
 	
-	return ret;
+	
 
 }
 
