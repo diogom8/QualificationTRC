@@ -16,21 +16,21 @@
 
 struct Data_TEST_1 //output data for test 1
 {
+	//REQUIRED DATA
 	double Time;
-    double ElevatorAngle;
-	double EngineSpeed;
-	double ExhaustGasTemperature;
-	double FuelFlow;
-	double IndicatedAirspeed;
-	double PitchAngle;
-	double PitchControllerPosition;
-	double IndicatedAltitude;
-	double RateOfClimb;
-	double RudderAngle;
-	double ThrottleSetting;
-	double Thrust;
+    double IndicatedAltitude;
+	double AirSpeedIndicated;
+	//EXTRA DATA TO PLOT
+	double ElevatorDeflection;
+	double PlanePitch;
+	//DATA FOR AUTOMATIC INPUT
+	double ElevatorPosition;
+	double ElevatorTrimPosition;
+	double AileronPosition;
+	double RudderPosition;
+	double EnginePosition;
 
-		
+	
 		
 	
 };
@@ -54,7 +54,7 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
     HRESULT hr;
     
 	
-	StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_NEW_1.txt",true);
+	StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt",true);
 	
 	
 
@@ -101,22 +101,21 @@ void CALLBACK GetData_TEST_1(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 					
 						//Write reading data to file
 						pS->Time = pS->Time - dInitTime;
+						
+						//REQUIRED DATA
 						myfile->Write(pS->Time+" ");
-						
-						
-						//myfile->Write(pS->ElevatorAngle+" ");
-						//myfile->Write(pS->EngineSpeed+" ");
-						//myfile->Write(pS->ExhaustGasTemperature+" ");
-						//myfile->Write(pS->FuelFlow+" ");
-						myfile->Write(pS->IndicatedAirspeed+" ");
-						//myfile->Write(pS->PitchAngle+" ");
-						//myfile->Write(pS->PitchControllerPosition+" ");
+						myfile->Write(pS->AirSpeedIndicated+" ");
 						myfile->Write(pS->IndicatedAltitude+" ");
-						//myfile->Write(pS->RateOfClimb+" ");
-						//myfile->Write(pS->RudderAngle+" ");
-						//myfile->Write(pS->ThrottleSetting+" ");
-						//myfile->Write(pS->Thrust);
-
+						//EXTRA DATA TO PLOT
+						myfile->Write(pS->ElevatorDeflection+" ");
+						myfile->Write(pS->PlanePitch+" ");
+						//DATA FOR AUTOMATIC INPUT
+						myfile->Write(pS->ElevatorPosition+" ");
+						myfile->Write(pS->ElevatorTrimPosition+" ");
+						myfile->Write(pS->AileronPosition+" ");
+						myfile->Write(pS->RudderPosition+" ");
+						myfile->Write(pS->EnginePosition+" ");
+						
 
 						myfile->Write("\n");
 					}
@@ -166,33 +165,41 @@ void START_TEST_1 ()
         
         // Set up the data definition, but do not yet do anything with it
 		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "LOCAL TIME", "seconds"); //Example
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "ELEVATOR DEFLECTION", "radians"); 
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "GENERAL ENG RPM:1", "rpm");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "GENERAL ENG EXHAUST GAS TEMPERATURE:1", "rankine");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "RECIP ENG FUEL FLOW:1", "pounds per hour");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "AIRSPEED INDICATED", "knots");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "PLANE PITCH DEGREES", "radians");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "ELEVATOR POSITION", "position");
+		//DATA TO EVALUATE TEST		
 		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "INDICATED ALTITUDE", "feet");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "VERTICAL SPEED", "feet per second");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "RUDDER DEFLECTION", "radians");
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "AIRSPEED INDICATED", "knots");
+		 
+		//EXTRA DATA TO PLOT
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "ELEVATOR DEFLECTION", "radians");
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "PLANE PITCH DEGREES", "radians");
+
+
+		//DATA FOR AUTOMATIC INPUT
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "ELEVATOR POSITION", "position");
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "ELEVATOR TRIM POSITION", "radians");
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "AILERON POSITION", "position");
+		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "RUDDER POSITION", "position");
 		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent");
-		hr = SimConnect_AddToDataDefinition(hSimConnect, DataDefinition_TEST_1, "PROP THRUST:1", "pounds");
 		
 		
-		
-      
+				
+		      
 
         // Request an event when the simulation pauses (end of test)
         hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_PAUSED, "Paused");
 		hr = SimConnect_SubscribeToSystemEvent(hSimConnect, EVENT_SIM_UNPAUSED, "Unpaused");
-		
+
+		//Create a new data file
+		StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt");
+		myfile->Close();
+
+
 		bQuitTest = false;bTestStarted = false;
         while( bQuitTest == false )
         {
 			hr = SimConnect_RequestDataOnSimObjectType(hSimConnect, DataRequest_TEST_1, DataDefinition_TEST_1, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
             SimConnect_CallDispatch(hSimConnect, GetData_TEST_1, NULL);
-            Sleep(200);//Time interbal between samples (cant be too large due to request)
+            Sleep(200);//Time interval between samples (cant be too large due to request)
         } 
 		
         		

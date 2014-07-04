@@ -460,7 +460,7 @@ namespace QualificationTRC {
 			this->label16->AutoSize = true;
 			this->label16->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label16->Location = System::Drawing::Point(262, 94);
+			this->label16->Location = System::Drawing::Point(273, 94);
 			this->label16->Name = L"label16";
 			this->label16->Size = System::Drawing::Size(22, 14);
 			this->label16->TabIndex = 18;
@@ -474,9 +474,9 @@ namespace QualificationTRC {
 				static_cast<System::Byte>(0)));
 			this->label15->Location = System::Drawing::Point(262, 202);
 			this->label15->Name = L"label15";
-			this->label15->Size = System::Drawing::Size(31, 14);
+			this->label15->Size = System::Drawing::Size(45, 14);
 			this->label15->TabIndex = 17;
-			this->label15->Text = L"(%)";
+			this->label15->Text = L"-1/+1";
 			// 
 			// label14
 			// 
@@ -485,9 +485,9 @@ namespace QualificationTRC {
 				static_cast<System::Byte>(0)));
 			this->label14->Location = System::Drawing::Point(262, 168);
 			this->label14->Name = L"label14";
-			this->label14->Size = System::Drawing::Size(31, 14);
+			this->label14->Size = System::Drawing::Size(45, 14);
 			this->label14->TabIndex = 17;
-			this->label14->Text = L"(%)";
+			this->label14->Text = L"-1/+1";
 			// 
 			// label13
 			// 
@@ -496,16 +496,17 @@ namespace QualificationTRC {
 				static_cast<System::Byte>(0)));
 			this->label13->Location = System::Drawing::Point(262, 132);
 			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(31, 14);
+			this->label13->Size = System::Drawing::Size(45, 14);
 			this->label13->TabIndex = 17;
-			this->label13->Text = L"(%)";
+			this->label13->Text = L"-1/+1";
+			this->label13->Click += gcnew System::EventHandler(this, &Form1::label13_Click);
 			// 
 			// label11
 			// 
 			this->label11->AutoSize = true;
 			this->label11->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label11->Location = System::Drawing::Point(262, 55);
+			this->label11->Location = System::Drawing::Point(269, 54);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(31, 14);
 			this->label11->TabIndex = 17;
@@ -516,7 +517,7 @@ namespace QualificationTRC {
 			this->label9->AutoSize = true;
 			this->label9->Font = (gcnew System::Drawing::Font(L"Tahoma", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label9->Location = System::Drawing::Point(262, 20);
+			this->label9->Location = System::Drawing::Point(269, 20);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(31, 14);
 			this->label9->TabIndex = 16;
@@ -1175,7 +1176,7 @@ private: void Refresh_Simulator(int time){
 private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArgs^  e) {
 
 		//Refresh Simulator 200ms (allow to load new inputs from user)
-		Refresh_Simulator(100);
+		Refresh_Simulator(150);
 		
 			 
 		fCheckIC = 0;
@@ -1253,6 +1254,8 @@ private: System::Void lblCheckIC_Click(System::Object^  sender, System::EventArg
 
 		 
 private: System::Void label16_Click(System::Object^  sender, System::EventArgs^  e) {
+		 }
+private: System::Void label13_Click(System::Object^  sender, System::EventArgs^  e) {
 		 }
 };
 

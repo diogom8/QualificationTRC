@@ -14,7 +14,7 @@ plot 'DATA_TESTE_1.txt' using 1:3 with lines lt -1 lw 1 lc rgb "blue" title 'Sim
 	 
 set xrange [0:180]
 set xlabel "Time [s]"
-set yrange [2000:4000]
+set yrange [1900:4000]
 set ylabel "Pressure Altitude [feet]"
 set key right bottom Left
 set timestamp
