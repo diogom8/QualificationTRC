@@ -8,7 +8,7 @@
 //				Selects START function for selected test
 //------------------------------------------------------------------------------
 #include "TestFiles/TEST_1.h"
-
+#include "TestFiles/TEST_2.h"
 
 
 bool StartTestSimConnect(int iTestNumber)
@@ -19,6 +19,9 @@ bool StartTestSimConnect(int iTestNumber)
 		{
 			case 1:
 				START_TEST_1();
+				break;
+			case 2:
+				START_TEST_2();
 				break;
 			default:
 				break;

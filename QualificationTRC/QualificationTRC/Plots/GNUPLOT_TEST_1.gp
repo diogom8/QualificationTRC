@@ -9,7 +9,7 @@
 #Absolute
 set term wxt 0
 reset
-plot 'DATA_TESTE_1.txt' using 1:3 with lines lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
+plot 'C:\Users\Diogo\Desktop\outro.projBETA\DATA_TESTE_1.txt' using 1:3 with lines lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
 	 'DATA_TESTE_1_REF.txt' using ($1-8):2 with lines lt 0 lw 3 lc rgb "black" title 'Reference Data'
 	 
 set xrange [0:180]
@@ -25,7 +25,7 @@ replot
 set term wxt 1
 reset
 f(x) = a*x+2000
-fit f(x) 'DATA_TESTE_1.txt' using 1:3 via a
+fit f(x) 'C:\Users\Diogo\Desktop\outro.projBETA\DATA_TESTE_1.txt' using 1:3 via a
 plot f(x) lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
 	 'DATA_TESTE_1_REF.txt' using ($1-8):(2000+($1-8)*(718-100)/60) with lines lt 0 lw 3 lc rgb "black" title 'Reference Data (±100 feet/min)', \
 	 'DATA_TESTE_1_REF.txt' using ($1-8):(2000+($1-8)*(718+100)/60) with lines lt 0 lw 3 lc rgb "black" title ''
@@ -48,7 +48,7 @@ replot
 #Absolute
 set term wxt 2
 reset
-plot 'DATA_TESTE_1.txt' using 1:2 with lines lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
+plot 'C:\Users\Diogo\Desktop\outro.projBETA\DATA_TESTE_1.txt' using 1:2 with lines lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
 	 'DATA_TESTE_1_REF.txt' using ($1-8):3 with lines lt 0 lw 3 lc rgb "black" title 'Reference Data'	 
 set xrange [0:180]
 set xlabel "Time [s]"
@@ -63,7 +63,7 @@ replot
 set term wxt 3
 reset
 f(x) = a
-fit f(x) 'DATA_TESTE_1.txt' using 1:2 via a
+fit f(x) 'C:\Users\Diogo\Desktop\outro.projBETA\DATA_TESTE_1.txt' using 1:2 via a
 plot f(x) lt -1 lw 1 lc rgb "blue" title 'Simulation Data', \
 	 (80.1+3) lt 0 lw 3 lc rgb "black" title 'Reference Data (±3 kts)', \
 	 (80.1-3) lt 0 lw 3 lc rgb "black" title ''

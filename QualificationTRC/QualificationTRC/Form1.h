@@ -51,6 +51,9 @@ char fCheckIC = 0x00;
 double InitialConditions[6];
 double ActualInitialConditions[6];
 
+string sProjectPath;
+string sProjectDirectory;
+
 //bool Start_TEST_1(void);
 //Test Files
 #include "TestFiles/TEST_LOAD.h"
@@ -175,9 +178,9 @@ namespace QualificationTRC {
 	private: System::Windows::Forms::CheckBox^  lblDispRes;
 
 
-	//Globals
-	String^ sProjectFile;
-		
+	//Other Globals
+	
+
 	private: System::Windows::Forms::ListBox^  lblListBoxTests;
 	private: System::Windows::Forms::Label^  label18;
 	private: System::Windows::Forms::Panel^  panel1;
@@ -879,7 +882,8 @@ private: System::Void lblMenuNew_Click(System::Object^  sender, System::EventArg
 				
 				
 				//Close File and assig to working file
-				sProjectFile = sfileName;
+				msclr::interop::marshal_context context;//Conversion String^ to string
+				sProjectPath = context.marshal_as<std::string>(sfileName);
 				NewProjFile->Close();
 				loadProject(sfileName);
 			}
@@ -901,6 +905,8 @@ private: System::Void lblMenuLoad_Click(System::Object^  sender, System::EventAr
 			String^ sFileName =  openFileDialog1->FileName;
 			if (File::Exists(sFileName) == true)
 			{
+				msclr::interop::marshal_context context;//Conversion String^ to string
+				sProjectPath = context.marshal_as<std::string>(sFileName);;
 				loadProject(sFileName);
 			}
 			
@@ -1022,12 +1028,17 @@ private: void loadProject(String^ sFileName)
 
 			//Read Project Name
 			str = streamTestFile->ReadLine();
-			//Manipulate to get project name out of directory
-			msclr::interop::marshal_context context;
-			std::string str_aux = context.marshal_as<std::string>(str);
-			int i = str_aux.find_last_of("\\");
-			str_aux=str_aux.erase (0,i+1);
-			lblDialogProjectName->Text = gcnew String(str_aux.c_str());
+		
+			std::string str_complete = sProjectPath;
+			int i = str_complete.find_last_of("\\");
+			std::string str_complete2 = str_complete;
+			std::string str_filename = str_complete.erase (0,i+1);
+			sProjectDirectory = str_complete2.replace(i,str_complete2.length(),"");
+			
+			
+			
+			lblDialogProjectName->Text = gcnew String(str_filename.c_str());
+		
 
 						
 			//Read Project Date
@@ -1042,7 +1053,7 @@ private: void loadProject(String^ sFileName)
 			}
 			//Close File and assign to working file
 			streamTestFile->Close();
-			sProjectFile = sFileName;
+			
 
 			//Enable/Disable
 			lblButStart->Enabled = false;
@@ -1081,18 +1092,7 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		int iTestNumber = lblSelectBox->SelectedIndex;
 		iTestNumber++;
 
-		/*StreamWriter^ myfile = gcnew StreamWriter("Plots/DATA_TESTE_1.txt");
-		myfile->Close();
-		
-		check = 3;
-		if(Start_TEST_1() == false)
-		{
-			 lblDialogProjectDate->Text="\nFailed to connect to Prepar3D!";
-		}
-
-		lblDialogProjectDate->Text = Convert::ToString(check);*/
-
-		
+				
 		if(StartTestSimConnect(iTestNumber) == false)
 		{
 			 MessageBox::Show("Failed to connect to Prepar3D! Check if simulator is running	.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
@@ -1105,13 +1105,14 @@ private: System::Void lblButStart_Click(System::Object^  sender, System::EventAr
 		 
 	}
 private: System::Void lblButGenerateReport_Click(System::Object^  sender, System::EventArgs^  e) {
-
+			
+			string str = "cd 'C:\\Users\\Diogo\\Documents\\GitHub\\QualificationTRC\\QualificationTRC\\QualificationTRC\\Plots'";
 			
 			//GNUPLOT PIPING
-			/*FILE *pipe = _popen(GNUPLOT_NAME, "w");
+			FILE *pipe = _popen(GNUPLOT_NAME, "w");
 			fprintf(pipe, "set term wxt\n");
-			fprintf(pipe, "cd 'C:\\Users\\Diogo & Suhas\\Documents\\QualificationTRC\\QualificationTRC\\QualificationTRC\\Plots'\n");
-			fprintf(pipe, "load 'GNUPLOT_TEST_1.gp'\n");
+			//fprintf(pipe, "%s\n",str);
+			//fprintf(pipe, "load 'GNUPLOT_TEST_1.gp'\n");
 
 
 			if (pipe != NULL)
@@ -1122,7 +1123,7 @@ private: System::Void lblButGenerateReport_Click(System::Object^  sender, System
 				lblDialogProjectDate->Text="Não deu";
 		
 		 
-			_pclose(pipe);*/
+			_pclose(pipe);
 			
 			 
 			 //USEFUL STUFF TO TOGGLE JOYSTICK
